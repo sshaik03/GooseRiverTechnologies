@@ -9,9 +9,11 @@
 }
 
 .header-image {
+  z-index: 10000;
   width: 100%;
   height: auto;
   display: block;
+  position: fixed;
 }
 
 /* External buttons styling */

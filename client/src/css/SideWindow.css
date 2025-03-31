@@ -1,6 +1,6 @@
 /* Base SideWindow Styles */
 .side-window {
-    position: absolute;
+    position: fixed;
     right: 4vw;
     bottom: 6vh;
     width: 25vw;
@@ -130,12 +130,18 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start; /* Start the items at the top */
+    gap: 0.5rem; /* Reduced gap */
   }
   
   /* Compose Form Styles */
   .compose-form {
-    flex: 1;
+    /* Remove flex: 1 so the form takes only the space it needs */
+    margin-bottom: 0.5rem;
+  }
+  
+  .compose-form .form-group:last-child {
+    margin-bottom: 0; /* Remove extra bottom margin for the last group */
   }
   
   .form-group {
@@ -162,13 +168,13 @@
   }
   
   .form-group textarea {
-    height: 100px;
+    height: 160px;
     resize: vertical;
   }
   
   /* Compose Footer */
   .compose-footer {
-    margin-top: 1rem;
+    margin-top: 0.5rem; /* Minimal top margin */
   }
   
   .mark-buttons {

@@ -16,6 +16,7 @@ function App() {
         alt="Duck Creek Header"
         className="header-image"
       />
+      <h1 style = {{marginTop: '7%'}}> the below buttons are temporary</h1>
       <div className="external-buttons">
         <button onClick={() => { setHeaderColor('black'); setSideWindowMode('normal'); }}>
           Everything

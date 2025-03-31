@@ -1,3 +1,4 @@
+/* Base SideWindow Styles */
 .side-window {
     position: absolute;
     right: 4vw;
@@ -12,7 +13,9 @@
     flex-direction: column;
   }
   
-  /* Header with button container */
+  /* --- Normal Mode Header & Content --- */
+  
+  /* Normal Mode Header */
   .side-window-header {
     height: 12.5%;
     background-color: white;
@@ -23,7 +26,7 @@
     justify-content: center;
   }
   
-  /* Container for the header buttons */
+  /* Container for the header buttons (normal mode) */
   .button-container {
     display: flex;
     justify-content: center;
@@ -32,10 +35,9 @@
     width: 90%;
   }
   
-  /* Header buttons styling */
+  /* Header buttons styling (normal mode) */
   .header-button {
     width: 30%;
-    /* Background color will be set dynamically via inline style */
     color: white;
     font-family: 'Jost', sans-serif;
     font-size: 1.25rem;
@@ -50,7 +52,6 @@
   }
   
   .header-button:hover {
-    /* Hover effect can be handled in JS or remain as is if inline style persists */
     filter: brightness(90%);
   }
   
@@ -63,7 +64,7 @@
     margin-left: 0.5rem;
   }
   
-  /* Content area */
+  /* Normal Mode Content */
   .side-window-content {
     height: 70.5%;
     padding: 16px;
@@ -95,7 +96,117 @@
     margin: 1rem;
   }
   
-  /* Responsive adjustments */
+  /* --- Compose Mode Styles --- */
+  
+  /* Compose Mode Header */
+  .compose-header {
+    height: 12.5%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+  }
+  
+  .back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: black;
+  }
+  
+  .compose-header-text {
+    flex: 1;
+    text-align: center;
+    font-family: 'Jost', sans-serif;
+    font-size: 1.5rem;
+    color: black;
+    margin-right: 2rem;
+  }
+  
+  /* Compose Mode Content */
+  .compose-content {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Compose Form Styles */
+  .compose-form {
+    flex: 1;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group label {
+    display: block;
+    font-family: 'Jost', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Jost', sans-serif;
+    font-size: 1rem;
+  }
+  
+  .form-group textarea {
+    height: 100px;
+    resize: vertical;
+  }
+  
+  /* Compose Footer */
+  .compose-footer {
+    margin-top: 1rem;
+  }
+  
+  .mark-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .mark-button {
+    flex: 1;
+    margin: 0 0.25rem;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-family: 'Jost', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .send-button {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.75rem 1.5rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 0 auto;
+  }
+  
+  /* --- Responsive Adjustments --- */
+  
   @media screen and (max-width: 1024px) {
     .side-window {
       width: 35vw;
@@ -103,9 +214,9 @@
       right: 3vw;
       bottom: 5vh;
     }
-    .header-button {
+    .header-button,
+    .compose-header-text {
       font-size: 1.1rem;
-      padding: 0.4rem 0.6rem;
     }
     .side-window-content p {
       font-size: 1.3rem;
@@ -124,10 +235,12 @@
       font-size: 1rem;
       padding: 0.35rem 0.5rem;
     }
-    .side-window-header {
+    .side-window-header,
+    .compose-header {
       height: 15%;
     }
-    .side-window-content {
+    .side-window-content,
+    .compose-content {
       height: 70%;
       padding: 8px;
     }
@@ -143,7 +256,8 @@
       right: 5vw;
       bottom: 4vh;
     }
-    .header-button {
+    .header-button,
+    .compose-header-text {
       font-size: 0.9rem;
       padding: 0.3rem 0.5rem;
     }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../css/SideWindow.css';
-import { IoStar, IoSend, IoReader, IoChevronBack, IoSendOutline } from 'react-icons/io5';
+import { IoStar, IoSend, IoReader, IoChevronBack } from 'react-icons/io5';
 
 const SideWindow = ({ headerColor, mode, setSideWindowMode }) => {
   // In normal mode, we track which sub-state is active ("stars", "sent", "drafts")
@@ -46,8 +46,8 @@ const SideWindow = ({ headerColor, mode, setSideWindowMode }) => {
               </button>
             </div>
             <button className="send-button">
-              <IoSendOutline size={24} />
               <span>Send</span>
+              <IoSend size={24} />
             </button>
           </div>
         </div>

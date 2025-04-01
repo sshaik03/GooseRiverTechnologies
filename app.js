@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const pool = require('./db');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 app.use(express.json());
 
@@ -15,6 +17,47 @@ app.get("/status", (req, res) => {
   = POST: CREATE NOTIFICATIONS
   =========================
 */
+
+/*
+  0) Login Setup
+     - Expects: email, password
+*/
+
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    // Fetch the user by email
+    const result = await pool.query(
+      "SELECT * FROM users WHERE email = $1",
+      [email]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(400).send("Invalid credentials");
+    }
+
+    const user = result.rows[0];
+
+    // Compare the password with the stored hash
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).send("Invalid credentials");
+    }
+
+    // Generate a JWT token
+    const payload = {
+      userId: user.id,
+      email: user.email
+    };
+    const token = jwt.sign(payload, 'secKeyGooseRiver', { expiresIn: '1h' });
+    // security key is secKeyGooseRiver
+    // Respond with the token
+    res.json({ token });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error during login");
+  }
+});
 
 /*
   1) Policy Notifications

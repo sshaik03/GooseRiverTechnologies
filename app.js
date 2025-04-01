@@ -58,8 +58,7 @@ app.post("/notifications/news", async (req, res) => {
 
 /*
   3) Claims Notifications
-     - Expects: insuredName, claimantName, taskType, username, dueDate,
-                lineOfBusiness, description, priority, isCompleted
+     - Expects: insuredName, claimantName, taskType, username, dueDate, lineOfBusiness, description, priority, isCompleted
 */
 app.post("/notifications/claims", async (req, res) => {
   const { insuredName, claimantName, taskType, username, dueDate, lineOfBusiness, description, priority, isCompleted } = req.body;

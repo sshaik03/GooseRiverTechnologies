@@ -60,6 +60,7 @@
   margin-right: 0.5rem;
   font-size: 1.25rem;
   color: rgb(128, 128, 128);
+  transition: color 0.3s; /* Add transition for smooth color change */
 }
 
 .sort label {
@@ -74,6 +75,12 @@
   font-size: 1.25rem;
   width: 100%;
   box-sizing: border-box;
+  transition: color 0.3s; /* Add transition for smooth color change */
+}
+
+.search input::placeholder {
+  color: inherit; /* Inherit the color from the input for the placeholder */
+  transition: color 0.3s; /* Ensure placeholder color transitions smoothly */
 }
 
 .sort {
@@ -91,6 +98,7 @@
   background-size: 12px;
   width: 100%;
   box-sizing: border-box;
+  transition: color 0.3s; /* Add transition for smooth color change */
 }
 
 .compose-button {
@@ -126,7 +134,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f6f6f6; /* Changed to light gray to match sideWindow */
+  background-color: #f6f6f6;
   overflow-y: auto;
 }
 

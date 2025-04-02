@@ -15,9 +15,6 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
   // Find the color of the active tab
   const activeTabColor = tabs.find((tab) => tab.name === activeTab)?.color || 'black';
 
-  // Use a darker shade for Claims text
-  const textColor = activeTab === 'Claims' ? '#c77716' : activeTabColor;
-
   return (
     <div className="main-window">
       {/* Tabbed Header */}
@@ -41,16 +38,12 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
       {/* Search and Sort Area */}
       <div className="search-sort-area">
         <div className="search">
-          <label style={{ color: 'black' }}>Search:</label>
-          <input
-            type="text"
-            placeholder="Search messages"
-            style={{ color: textColor }}
-          />
+          <label>Search:</label>
+          <input type="text" placeholder="Search messages" />
         </div>
         <div className="sort">
-          <label style={{ color: 'black' }}>Sort By:</label>
-          <select style={{ color: textColor }}>
+          <label>Sort By:</label>
+          <select>
             <option>Newest</option>
             <option>Oldest</option>
           </select>

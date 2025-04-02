@@ -7,6 +7,16 @@ const SideWindow = ({ headerColor, mode, setSideWindowMode }) => {
   const [activeState, setActiveState] = useState("stars");
   const btnColor = headerColor || 'black';
 
+  // State to track the selected category in compose mode ("news", "policies", "claims")
+  const [selectedCategory, setSelectedCategory] = useState("news");
+
+  // Define the categories and their colors
+  const categories = {
+    news: { name: "News", color: '#069435' },
+    policies: { name: "Policies", color: '#7D2CFF' },
+    claims: { name: "Claims", color: '#ff9b22' },
+  };
+
   if (mode === "compose") {
     return (
       <div className="side-window">
@@ -35,17 +45,32 @@ const SideWindow = ({ headerColor, mode, setSideWindowMode }) => {
           </div>
           <div className="compose-footer">
             <div className="mark-buttons">
-              <button className="mark-button" style={{ backgroundColor: '#069435' }}>
+              <button
+                className={`mark-button ${selectedCategory === "news" ? "selected" : ""}`}
+                style={{ backgroundColor: categories.news.color }}
+                onClick={() => setSelectedCategory("news")}
+              >
                 News
               </button>
-              <button className="mark-button" style={{ backgroundColor: '#7D2CFF' }}>
+              <button
+                className={`mark-button ${selectedCategory === "policies" ? "selected" : ""}`}
+                style={{ backgroundColor: categories.policies.color }}
+                onClick={() => setSelectedCategory("policies")}
+              >
                 Policies
               </button>
-              <button className="mark-button" style={{ backgroundColor: '#ff9b22' }}>
+              <button
+                className={`mark-button ${selectedCategory === "claims" ? "selected" : ""}`}
+                style={{ backgroundColor: categories.claims.color }}
+                onClick={() => setSelectedCategory("claims")}
+              >
                 Claims
               </button>
             </div>
-            <button className="send-button">
+            <button
+              className="send-button"
+              style={{ backgroundColor: categories[selectedCategory].color }}
+            >
               <span>Send</span>
               <IoSend size={24} />
             </button>

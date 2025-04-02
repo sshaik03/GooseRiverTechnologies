@@ -1,11 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap');
-
 .App {
-  width: 100vw;
-  height: 100vh;
-  background-color: white;
-  position: relative;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensures the page is at least viewport height */
 }
 
 .header-image {
@@ -14,40 +10,15 @@
   height: auto;
   display: block;
   position: fixed;
+  top: 0;
 }
 
-/* External buttons styling */
-.external-buttons {
-  position: absolute;
-  top: 10rem;
-  left: 10px;
-  display: flex;
-  gap: 1rem;
+.spacer {
+  flex-grow: 1; /* Pushes main-window-wrapper to the bottom */
+  min-height: calc(100vh - 80vh - 6vh); /* Ensures mainWindow starts at bottom: 6vh */
 }
 
-.external-buttons button {
-  font-family: 'Jost', sans-serif;
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  color: white;
-}
-
-.external-buttons button:nth-child(1) {
-  background-color: black;
-}
-.external-buttons button:nth-child(2) {
-  background-color: #069435;
-}
-.external-buttons button:nth-child(3) {
-  background-color: #7D2CFF;
-}
-.external-buttons button:nth-child(4) {
-  background-color: #ff9b22;
-}
-.external-buttons button:nth-child(5) {
-  background-color: black;
-  /* The Compose button uses black with white text; additional inline styles in App.js ensure this */
+.main-window-wrapper {
+  padding-left: 4vw; /* Mimics left: 4vw */
+  padding-bottom: 6vh; /* Mimics bottom: 6vh */
 }

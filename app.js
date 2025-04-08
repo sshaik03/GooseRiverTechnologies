@@ -4,6 +4,7 @@ const PORT = process.env.PORT || 3000;
 const pool = require('./db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { v4: uuidv4 } = require('uuid');
 
 app.use(express.json());
 
@@ -65,12 +66,14 @@ app.post("/login", async (req, res) => {
 */
 app.post("/notifications/policy", async (req, res) => {
   const { policyId, user_id, subject, body, isRead, isArchived } = req.body;
+  const uniqueId = uuidv4(); // generate a new unique ID
+
   try {
     const result = await pool.query(
-      `INSERT INTO policy (policy_id, user_id, subject, body, is_read, is_archived)
-       VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO policy (policy_id, user_id, subject, body, is_read, is_archived, unique_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING *`,
-      [policyId, user_id, subject, body, isRead, isArchived]
+      [policyId, user_id, subject, body, isRead, isArchived, uniqueId]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -85,12 +88,14 @@ app.post("/notifications/policy", async (req, res) => {
 */
 app.post("/notifications/news", async (req, res) => {
   const { user_id, isRead, createdDate, expirationDate, type, title, details } = req.body;
+  const uniqueId = uuidv4(); // generate a new unique ID
+
   try {
     const result = await pool.query(
-      `INSERT INTO news (user_id, is_read, created_date, expiration_date, type, title, details)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
+      `INSERT INTO news (user_id, is_read, created_date, expiration_date, type, title, details, unique_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING *`,
-      [user_id, isRead, createdDate, expirationDate, type, title, details]
+      [user_id, isRead, createdDate, expirationDate, type, title, details, uniqueId]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -105,12 +110,14 @@ app.post("/notifications/news", async (req, res) => {
 */
 app.post("/notifications/claims", async (req, res) => {
   const { insuredName, claimantName, taskType, username, dueDate, lineOfBusiness, description, priority, isCompleted } = req.body;
+  const uniqueId = uuidv4(); // generate a new unique ID
+
   try {
     const result = await pool.query(
-      `INSERT INTO claims (insured_name, claimant_name, task_type, username, due_date, line_of_business, description, priority, is_completed)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      `INSERT INTO claims (insured_name, claimant_name, task_type, username, due_date, line_of_business, description, priority, is_completed, unique_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
        RETURNING *`,
-      [insuredName, claimantName, taskType, username, dueDate, lineOfBusiness, description, priority, isCompleted]
+      [insuredName, claimantName, taskType, username, dueDate, lineOfBusiness, description, priority, isCompleted, uniqueId]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {

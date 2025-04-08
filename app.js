@@ -46,7 +46,7 @@ app.post("/login", async (req, res) => {
 
     // Generate a JWT token
     const payload = {
-      userId: user.id,
+      user_id: user.id,
       email: user.email
     };
     const token = jwt.sign(payload, 'secKeyGooseRiver', { expiresIn: '1h' });
@@ -61,16 +61,16 @@ app.post("/login", async (req, res) => {
 
 /*
   1) Policy Notifications
-     - Expects: policyId, userId, subject, body, isRead, isArchived
+     - Expects: policyId, user_id, subject, body, isRead, isArchived
 */
 app.post("/notifications/policy", async (req, res) => {
-  const { policyId, userId, subject, body, isRead, isArchived } = req.body;
+  const { policyId, user_id, subject, body, isRead, isArchived } = req.body;
   try {
     const result = await pool.query(
       `INSERT INTO policy (policy_id, user_id, subject, body, is_read, is_archived)
        VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING *`,
-      [policyId, userId, subject, body, isRead, isArchived]
+      [policyId, user_id, subject, body, isRead, isArchived]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -81,16 +81,16 @@ app.post("/notifications/policy", async (req, res) => {
 
 /*
   2) News Notifications
-     - Expects: userId, isRead, createdDate, expirationDate, type, title, details
+     - Expects: user_id, isRead, createdDate, expirationDate, type, title, details
 */
 app.post("/notifications/news", async (req, res) => {
-  const { userId, isRead, createdDate, expirationDate, type, title, details } = req.body;
+  const { user_id, isRead, createdDate, expirationDate, type, title, details } = req.body;
   try {
     const result = await pool.query(
       `INSERT INTO news (user_id, is_read, created_date, expiration_date, type, title, details)
        VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING *`,
-      [userId, isRead, createdDate, expirationDate, type, title, details]
+      [user_id, isRead, createdDate, expirationDate, type, title, details]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -127,10 +127,10 @@ app.post("/notifications/claims", async (req, res) => {
 
 /*
   POLICY NOTIFICATIONS
-  Optional filters: policyId, userId, subject, body, isRead, isArchived
+  Optional filters: policyId, user_id, subject, body, isRead, isArchived
 */
 app.get("/notifications/policy", async (req, res) => {
-  const { policyId, userId, subject, body, isRead, isArchived } = req.query;
+  const { policyId, user_id, subject, body, isRead, isArchived } = req.query;
   try {
     let baseQuery = "SELECT * FROM policy";
     const conditions = [];
@@ -140,8 +140,8 @@ app.get("/notifications/policy", async (req, res) => {
       values.push(policyId);
       conditions.push(`policy_id = $${values.length}`);
     }
-    if (userId) {
-      values.push(userId);
+    if (user_id) {
+      values.push(user_id);
       conditions.push(`user_id = $${values.length}`);
     }
     if (subject) {
@@ -192,17 +192,17 @@ app.get("/notifications/policy/:id", async (req, res) => {
 
 /*
   NEWS NOTIFICATIONS
-  Optional filters: userId, isRead, createdDate, expirationDate, type, title, details
+  Optional filters: user_id, isRead, createdDate, expirationDate, type, title, details
 */
 app.get("/notifications/news", async (req, res) => {
-  const { userId, isRead, createdDate, expirationDate, type, title, details } = req.query;
+  const { user_id, isRead, createdDate, expirationDate, type, title, details } = req.query;
   try {
     let baseQuery = "SELECT * FROM news";
     const conditions = [];
     const values = [];
 
-    if (userId) {
-      values.push(userId);
+    if (user_id) {
+      values.push(user_id);
       conditions.push(`user_id = $${values.length}`);
     }
     if (isRead !== undefined) {

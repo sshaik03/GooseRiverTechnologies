@@ -67,7 +67,7 @@ app.post("/notifications/policy", async (req, res) => {
   const { policyId, userId, subject, body, isRead, isArchived } = req.body;
   try {
     const result = await pool.query(
-      `INSERT INTO policy_notifications (policy_id, user_id, subject, body, is_read, is_archived)
+      `INSERT INTO policy (policy_id, user_id, subject, body, is_read, is_archived)
        VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING *`,
       [policyId, userId, subject, body, isRead, isArchived]
@@ -87,7 +87,7 @@ app.post("/notifications/news", async (req, res) => {
   const { userId, isRead, createdDate, expirationDate, type, title, details } = req.body;
   try {
     const result = await pool.query(
-      `INSERT INTO news_notifications (user_id, is_read, created_date, expiration_date, type, title, details)
+      `INSERT INTO news (user_id, is_read, created_date, expiration_date, type, title, details)
        VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING *`,
       [userId, isRead, createdDate, expirationDate, type, title, details]
@@ -107,7 +107,7 @@ app.post("/notifications/claims", async (req, res) => {
   const { insuredName, claimantName, taskType, username, dueDate, lineOfBusiness, description, priority, isCompleted } = req.body;
   try {
     const result = await pool.query(
-      `INSERT INTO claims_notifications (insured_name, claimant_name, task_type, username, due_date, line_of_business, description, priority, is_completed)
+      `INSERT INTO claims (insured_name, claimant_name, task_type, username, due_date, line_of_business, description, priority, is_completed)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
        RETURNING *`,
       [insuredName, claimantName, taskType, username, dueDate, lineOfBusiness, description, priority, isCompleted]
@@ -132,7 +132,7 @@ app.post("/notifications/claims", async (req, res) => {
 app.get("/notifications/policy", async (req, res) => {
   const { policyId, userId, subject, body, isRead, isArchived } = req.query;
   try {
-    let baseQuery = "SELECT * FROM policy_notifications";
+    let baseQuery = "SELECT * FROM policy";
     const conditions = [];
     const values = [];
 
@@ -177,7 +177,7 @@ app.get("/notifications/policy/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
-      "SELECT * FROM policy_notifications WHERE id = $1",
+      "SELECT * FROM policy WHERE id = $1",
       [id]
     );
     if (result.rows.length === 0) {
@@ -197,7 +197,7 @@ app.get("/notifications/policy/:id", async (req, res) => {
 app.get("/notifications/news", async (req, res) => {
   const { userId, isRead, createdDate, expirationDate, type, title, details } = req.query;
   try {
-    let baseQuery = "SELECT * FROM news_notifications";
+    let baseQuery = "SELECT * FROM news";
     const conditions = [];
     const values = [];
 
@@ -246,7 +246,7 @@ app.get("/notifications/news/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
-      "SELECT * FROM news_notifications WHERE id = $1",
+      "SELECT * FROM news WHERE id = $1",
       [id]
     );
     if (result.rows.length === 0) {
@@ -268,7 +268,7 @@ app.get("/notifications/claims", async (req, res) => {
   const { insuredName, claimantName, taskType, username, dueDate, lineOfBusiness, description, priority, isCompleted } = req.query;
 
   try {
-    let baseQuery = "SELECT * FROM claims_notifications";
+    let baseQuery = "SELECT * FROM claims";
     const conditions = [];
     const values = [];
 
@@ -325,7 +325,7 @@ app.get("/notifications/claims/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
-      "SELECT * FROM claims_notifications WHERE id = $1",
+      "SELECT * FROM claims WHERE id = $1",
       [id]
     );
     if (result.rows.length === 0) {

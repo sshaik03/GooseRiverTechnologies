@@ -62,18 +62,18 @@ app.post("/login", async (req, res) => {
 
 /*
   1) Policy Notifications
-     - Expects: policyId, user_id, subject, body, isRead, isArchived
+     - Expects: policyId, user_id, subject, body, is_read, isArchived
 */
 app.post("/notifications/policy", async (req, res) => {
-  const { policyId, user_id, subject, body, isRead, isArchived } = req.body;
-  const uniqueId = uuidv4(); // generate a new unique ID
+  const { policy_id, user_id, subject, body, is_read, is_archived } = req.body;
+  const unique_id = uuidv4(); // generate a new unique ID
 
   try {
     const result = await pool.query(
       `INSERT INTO policy (policy_id, user_id, subject, body, is_read, is_archived, unique_id)
        VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING *`,
-      [policyId, user_id, subject, body, isRead, isArchived, uniqueId]
+      [policy_id, user_id, subject, body, is_read, is_archived, unique_id]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -84,18 +84,18 @@ app.post("/notifications/policy", async (req, res) => {
 
 /*
   2) News Notifications
-     - Expects: user_id, isRead, createdDate, expirationDate, type, title, details
+     - Expects: user_id, is_read, created_date, expiration_date, type, title, details
 */
 app.post("/notifications/news", async (req, res) => {
-  const { user_id, isRead, createdDate, expirationDate, type, title, details } = req.body;
-  const uniqueId = uuidv4(); // generate a new unique ID
+  const { user_id, is_read, created_date, expiration_date, type, title, details } = req.body;
+  const unique_id = uuidv4(); // generate a new unique ID
 
   try {
     const result = await pool.query(
       `INSERT INTO news (user_id, is_read, created_date, expiration_date, type, title, details, unique_id)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING *`,
-      [user_id, isRead, createdDate, expirationDate, type, title, details, uniqueId]
+      [user_id, is_read, created_date, expiration_date, type, title, details, unique_id]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -106,18 +106,18 @@ app.post("/notifications/news", async (req, res) => {
 
 /*
   3) Claims Notifications
-     - Expects: insuredName, claimantName, taskType, username, dueDate, lineOfBusiness, description, priority, isCompleted
+     - Expects: insured_name, claimant_name, task_type, username, due_date, line_of_business, description, priority, is_completed
 */
 app.post("/notifications/claims", async (req, res) => {
-  const { insuredName, claimantName, taskType, username, dueDate, lineOfBusiness, description, priority, isCompleted } = req.body;
-  const uniqueId = uuidv4(); // generate a new unique ID
+  const { insured_name, claimant_name, task_type, username, due_date, line_of_business, description, priority, is_completed } = req.body;
+  const unique_id = uuidv4(); // generate a new unique ID
 
   try {
     const result = await pool.query(
       `INSERT INTO claims (insured_name, claimant_name, task_type, username, due_date, line_of_business, description, priority, is_completed, unique_id)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
        RETURNING *`,
-      [insuredName, claimantName, taskType, username, dueDate, lineOfBusiness, description, priority, isCompleted, uniqueId]
+      [insured_name, claimant_name, task_type, username, due_date, line_of_business, description, priority, is_completed, unique_id]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -134,10 +134,10 @@ app.post("/notifications/claims", async (req, res) => {
 
 /*
   POLICY NOTIFICATIONS
-  Optional filters: policyId, user_id, subject, body, isRead, isArchived
+  Optional filters: policyId, user_id, subject, body, is_read, isArchived
 */
 app.get("/notifications/policy", async (req, res) => {
-  const { policyId, user_id, subject, body, isRead, isArchived } = req.query;
+  const { policyId, user_id, subject, body, is_read, isArchived } = req.query;
   try {
     let baseQuery = "SELECT * FROM policy";
     const conditions = [];
@@ -159,8 +159,8 @@ app.get("/notifications/policy", async (req, res) => {
       values.push(body);
       conditions.push(`body = $${values.length}`);
     }
-    if (isRead !== undefined) {
-      values.push(isRead === 'true');
+    if (is_read !== undefined) {
+      values.push(is_read === 'true');
       conditions.push(`is_read = $${values.length}`);
     }
     if (isArchived !== undefined) {
@@ -184,7 +184,7 @@ app.get("/notifications/policy/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
-      "SELECT * FROM policy WHERE id = $1",
+      "SELECT * FROM policy WHERE unique_id = $1",
       [id]
     );
     if (result.rows.length === 0) {
@@ -199,10 +199,10 @@ app.get("/notifications/policy/:id", async (req, res) => {
 
 /*
   NEWS NOTIFICATIONS
-  Optional filters: user_id, isRead, createdDate, expirationDate, type, title, details
+  Optional filters: user_id, is_read, created_date, expiration_date, type, title, details
 */
 app.get("/notifications/news", async (req, res) => {
-  const { user_id, isRead, createdDate, expirationDate, type, title, details } = req.query;
+  const { user_id, is_read, created_date, expiration_date, type, title, details } = req.query;
   try {
     let baseQuery = "SELECT * FROM news";
     const conditions = [];
@@ -212,16 +212,16 @@ app.get("/notifications/news", async (req, res) => {
       values.push(user_id);
       conditions.push(`user_id = $${values.length}`);
     }
-    if (isRead !== undefined) {
-      values.push(isRead === 'true');
+    if (is_read !== undefined) {
+      values.push(is_read === 'true');
       conditions.push(`is_read = $${values.length}`);
     }
-    if (createdDate) {
-      values.push(createdDate);
+    if (created_date) {
+      values.push(created_date);
       conditions.push(`created_date = $${values.length}`);
     }
-    if (expirationDate) {
-      values.push(expirationDate);
+    if (expiration_date) {
+      values.push(expiration_date);
       conditions.push(`expiration_date = $${values.length}`);
     }
     if (type) {
@@ -253,7 +253,7 @@ app.get("/notifications/news/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
-      "SELECT * FROM news WHERE id = $1",
+      "SELECT * FROM news WHERE unique_id = $1",
       [id]
     );
     if (result.rows.length === 0) {
@@ -268,39 +268,39 @@ app.get("/notifications/news/:id", async (req, res) => {
 
 /*
   CLAIMS NOTIFICATIONS
-  Optional filters: insuredName, claimantName, taskType, username, dueDate,
-                    lineOfBusiness, description, priority, isCompleted
+  Optional filters: insured_name, claimant_name, task_type, username, due_date,
+                    line_of_business, description, priority, is_completed
 */
 app.get("/notifications/claims", async (req, res) => {
-  const { insuredName, claimantName, taskType, username, dueDate, lineOfBusiness, description, priority, isCompleted } = req.query;
+  const { insured_name, claimant_name, task_type, username, due_date, line_of_business, description, priority, is_completed } = req.query;
 
   try {
     let baseQuery = "SELECT * FROM claims";
     const conditions = [];
     const values = [];
 
-    if (insuredName) {
-      values.push(insuredName);
+    if (insured_name) {
+      values.push(insured_name);
       conditions.push(`insured_name = $${values.length}`);
     }
-    if (claimantName) {
-      values.push(claimantName);
+    if (claimant_name) {
+      values.push(claimant_name);
       conditions.push(`claimant_name = $${values.length}`);
     }
-    if (taskType) {
-      values.push(taskType);
+    if (task_type) {
+      values.push(task_type);
       conditions.push(`task_type = $${values.length}`);
     }
     if (username) {
       values.push(username);
       conditions.push(`username = $${values.length}`);
     }
-    if (dueDate) {
-      values.push(dueDate);
+    if (due_date) {
+      values.push(due_date);
       conditions.push(`due_date = $${values.length}`);
     }
-    if (lineOfBusiness) {
-      values.push(lineOfBusiness);
+    if (line_of_business) {
+      values.push(line_of_business);
       conditions.push(`line_of_business = $${values.length}`);
     }
     if (description) {
@@ -311,8 +311,8 @@ app.get("/notifications/claims", async (req, res) => {
       values.push(priority);
       conditions.push(`priority = $${values.length}`);
     }
-    if (isCompleted !== undefined) {
-      values.push(isCompleted === 'true');
+    if (is_completed !== undefined) {
+      values.push(is_completed === 'true');
       conditions.push(`is_completed = $${values.length}`);
     }
 
@@ -332,7 +332,7 @@ app.get("/notifications/claims/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
-      "SELECT * FROM claims WHERE id = $1",
+      "SELECT * FROM claims WHERE unique_id = $1",
       [id]
     );
     if (result.rows.length === 0) {

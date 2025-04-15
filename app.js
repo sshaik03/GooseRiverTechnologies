@@ -18,9 +18,33 @@ app.get("/status", (req, res) => {
   = POST: CREATE NOTIFICATIONS
   =========================
 */
+/*
+  0.1) Signup
+     - Expects: username, password, email
+
+     - Note: should probably add password encryption
+*/
+
+app.post("/signup", async (req, res) => {
+  const { username, password, email } = req.body;
+  const unique_id = uuidv4(); // generate a new unique ID
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO user_info (username, password, email, unique_id)
+       VALUES ($1, $2, $3, $4)
+       RETURNING *`,
+      [username, password, email, unique_id]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error signing up user");
+  }
+});
 
 /*
-  0) Login Setup
+  0.2) Login Setup
      - Expects: email, password
 */
 
@@ -59,6 +83,7 @@ app.post("/login", async (req, res) => {
     res.status(500).send("Server error during login");
   }
 });
+
 
 /*
   1) Policy Notifications

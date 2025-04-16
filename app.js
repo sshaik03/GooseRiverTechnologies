@@ -1,13 +1,14 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 const pool = require('./db');
-const bcrypt = require('bcryptjs');
+//const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
-
 // Health check
 app.get("/status", (req, res) => {
   res.send({ Status: "Running" });
@@ -24,39 +25,85 @@ app.get("/status", (req, res) => {
      - Expects: email, password
 */
 
-app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+app.post("/register", async (req, res) => {
+  const { username, email, password } = req.body;
+
+  // Basic validation
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: "Please fill in all fields." });
+  }
+
   try {
-    // Fetch the user by email
-    const result = await pool.query(
-      "SELECT * FROM users WHERE email = $1",
-      [email]
+    // Check if user already exists
+    const userCheck = await pool.query(
+      "SELECT * FROM user_info WHERE username = $1 OR email = $2",
+      [username, email]
     );
-    
+
+    if (userCheck.rows.length > 0) {
+      return res.status(400).json({ message: "Username or email already in use." });
+    }
+
+    const uniqueId = uuidv4(); // generate a new unique ID for the user
+
+    // Insert new user (including generated unique_id)
+    const newUser = await pool.query(
+      `INSERT INTO user_info (unique_id, username, email, password)
+       VALUES ($1, $2, $3, $4)
+       RETURNING unique_id, username, email`,
+      [uniqueId, username, email, password]
+    );
+
+    res.status(201).json({
+      message: "Account created successfully",
+      user: newUser.rows[0],
+    });
+  } catch (err) {
+    console.error("Registration error:", err);
+    res.status(500).json({ message: "Server error during registration" });
+  }
+});
+
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // Look up user by username OR email from user_info table
+    const result = await pool.query(
+      "SELECT * FROM user_info WHERE username = $1 OR email = $1",
+      [username]
+    );
+
     if (result.rows.length === 0) {
-      return res.status(400).send("Invalid credentials");
+      return res.status(400).json({ message: "User not found" });
     }
 
     const user = result.rows[0];
 
-    // Compare the password with the stored hash
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).send("Invalid credentials");
+    // Compare password directly (plaintext comparison)
+    if (password !== user.password) {
+      return res.status(400).json({ message: "Incorrect password" });
     }
 
-    // Generate a JWT token
+    // Generate JWT token
     const payload = {
-      user_id: user.id,
+      user_id: user.unique_id, 
+      username: user.username,
       email: user.email
     };
     const token = jwt.sign(payload, 'secKeyGooseRiver', { expiresIn: '1h' });
-    // security key is secKeyGooseRiver
-    // Respond with the token
-    res.json({ token });
+
+    // Send back token and some basic info
+    res.json({
+      message: "Login successful",
+      token,
+      user_id: user.unique_id, 
+      username: user.username,
+      email: user.email
+    });
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error during login");
+    console.error("Login error:", err);
+    res.status(500).json({ message: "Server error during login" });
   }
 });
 

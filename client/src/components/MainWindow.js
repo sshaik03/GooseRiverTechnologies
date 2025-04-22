@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/MainWindow.css';
 import { IoMail, IoCreate } from 'react-icons/io5';
+import { getUserFromToken } from '../utils/auth';
 
 const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
   const [activeTab, setActiveTab] = useState('Everything');
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const tabs = [
     { name: 'Everything', color: 'black' },
@@ -14,6 +17,36 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
 
   // Find the color of the active tab
   const activeTabColor = tabs.find((tab) => tab.name === activeTab)?.color || 'black';
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      const user = getUserFromToken();
+      if (!user) return;
+  
+      let url = `http://localhost:4000/notifications?recipient_id=${user.user_id}`;
+  
+      if (activeTab === 'News') {
+        url += `&notification_type=news`;
+      } else if (activeTab === 'Policies') {
+        url += `&notification_type=policy`;
+      } else if (activeTab === 'Claims') {
+        url += `&notification_type=claims`;
+      }
+      // "Everything" just uses the base URL with recipient_id
+  
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        setNotifications(data);
+      } catch (e) {
+        console.error('Error fetching notifications:', e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotifications();
+  }, [activeTab]); // Fetch notifications again when the active tab changes
 
   return (
     <div className="main-window">
@@ -60,10 +93,22 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
 
       {/* Main Content Area */}
       <div className="main-content">
-        <div className="empty-state">
-          <IoMail size={62} className="empty-icon" />
-          <p>You haven't received any messages yet.</p>
-        </div>
+        {loading ? (
+          <p>Loading notifications...</p>
+        ) : notifications.length === 0 ? (
+          <div className="empty-state">
+            <IoMail size={62} className="empty-icon" />
+            <p>No messages of this type yet.</p>
+          </div>
+        ) : (
+          notifications.map((note) => (
+            <div key={note._id} className="notification-card">
+              <h3>{note.subject}</h3>
+              <p>{note.body}</p>
+              <small>{new Date(note.time_sent).toLocaleString()}</small>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

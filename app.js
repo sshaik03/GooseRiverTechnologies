@@ -25,7 +25,7 @@ app.use(express.json());
 
 // ───── helper utils ─────
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const ALLOWED_TYPES = ['policy', 'news', 'claim'];
+const ALLOWED_TYPES = ['policy', 'news', 'claims', 'other'];
 
 const isUUID   = str => UUID_RE.test(str);
 const parseBool = v => {
@@ -200,25 +200,6 @@ app.get('/notifications/id/:id', async (req, res) => {
   } catch (e) {
     console.error(e);
     res.status(500).send('Error fetching notification by ID');
-  }
-});
-
-/*─────────────────────────────────────
-  GET /notifications/type/:notification_type
-─────────────────────────────────────*/
-app.get('/notifications/type/:notification_type', async (req, res) => {
-  const { notification_type } = req.params;
-  if (!ALLOWED_TYPES.includes(notification_type))
-    return res.status(400).json({ message: 'Bad notification_type' });
-  try {
-    const rs = await pool.query(
-      'SELECT * FROM notifications WHERE notification_type=$1 ORDER BY time_sent DESC',
-      [notification_type]
-    );
-    res.json(rs.rows);
-  } catch (e) {
-    console.error(e);
-    res.status(500).send('Error fetching notifications by type');
   }
 });
 

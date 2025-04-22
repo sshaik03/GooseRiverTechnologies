@@ -155,19 +155,38 @@ app.post('/notifications', async (req, res) => {
 /* ────────────────────────────────────
    GET /notifications/:id  — by ID
    ──────────────────────────────────── */
-app.get('/notifications/:id', async (req, res) => {
-  try {
-    const rs = await pool.query(
-      'SELECT * FROM notifications WHERE _id=$1',
-      [req.params.id]
-    );
-    if (!rs.rows.length) return res.status(404).send('Notification not found');
-    res.json(rs.rows[0]);
-  } catch (e) {
-    console.error(e);
-    res.status(500).send('Error fetching notification by ID');
-  }
-});
+   app.get('/notifications/id/:id', async (req, res) => {
+    try {
+      const rs = await pool.query(
+        'SELECT * FROM notifications WHERE _id=$1',
+        [req.params.id]
+      );
+      if (!rs.rows.length) return res.status(404).send('Notification not found');
+      res.json(rs.rows[0]);
+    } catch (e) {
+      console.error(e);
+      res.status(500).send('Error fetching notification by ID');
+    }
+  });
+  
+  /* ────────────────────────────────────
+     GET /notifications/:notification_type  — by type
+     ──────────────────────────────────── */
+  
+  app.get('/notifications/type/:notification_type', async (req, res) => {
+    try {
+      const rs = await pool.query(
+        'SELECT * FROM notifications WHERE notification_type=$1',
+        [req.params.notification_type]
+      );
+      if (!rs.rows.length) return res.status(404).send('Notification not found');
+      res.json(rs.rows);
+    } catch (e) {
+      console.error(e);
+      res.status(500).send('Error fetching notifications by type');
+    }
+  });
+  
 
 /* ────────────────────────────────────
    PATCH /notifications/:id  — mark read,

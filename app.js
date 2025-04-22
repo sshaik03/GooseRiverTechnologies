@@ -111,45 +111,46 @@ app.post('/notifications', async (req, res) => {
      sender_id, recipient_id,
      is_read, is_archived, is_important
    ──────────────────────────────────── */
-app.get('/notifications', async (req, res) => {
-  const {
-    _id,
-    notification_type,
-    sender_id,
-    recipient_id,
-    is_read,
-    is_archived,
-    is_important
-  } = req.query;
-
-  try {
-    let query = 'SELECT * FROM notifications';
-    const cond = [];
-    const vals = [];
-
-    const add = (col, val, transform = v => v) => {
-      vals.push(transform(val));
-      cond.push(`${col} = $${vals.length}`);
-    };
-
-    if (_id)   add('_id',   _id);
-    if (notification_type) add('notification_type', notification_type);
-    if (sender_id)         add('sender_id',         sender_id);
-    if (recipient_id)      add('recipient_id',      recipient_id);
-    if (is_read !== undefined)      add('is_read',      is_read,      v => v === 'true');
-    if (is_archived !== undefined)  add('is_archived',  is_archived,  v => v === 'true');
-    if (is_important !== undefined) add('is_important', is_important, v => v === 'true');
-
-    if (cond.length) query += ' WHERE ' + cond.join(' AND ');
-    query += ' ORDER BY time_sent DESC';
-
-    const rs = await pool.query(query, vals);
-    res.json(rs.rows);
-  } catch (e) {
-    console.error(e);
-    res.status(500).send('Error fetching notifications');
-  }
-});
+   app.get('/notifications', async (req, res) => {
+    const {
+      _id,        // <-- renamed
+      notification_type,
+      sender_id,
+      recipient_id,
+      is_read,
+      is_archived,
+      is_important
+    } = req.query;
+  
+    try {
+      let query = 'SELECT * FROM notifications';
+      const cond = [];
+      const vals = [];
+  
+      const add = (col, val, transform = v => v) => {
+        vals.push(transform(val));
+        cond.push(`${col} = $${vals.length}`);
+      };
+  
+      if (_id)     add('_id', _id);
+      if (notification_type)   add('notification_type', notification_type);
+      if (sender_id)           add('sender_id',         sender_id);
+      if (recipient_id)        add('recipient_id',      recipient_id);
+      if (is_read !== undefined)      add('is_read',      is_read,      v => v === 'true');
+      if (is_archived !== undefined)  add('is_archived',  is_archived,  v => v === 'true');
+      if (is_important !== undefined) add('is_important', is_important, v => v === 'true');
+  
+      if (cond.length) query += ' WHERE ' + cond.join(' AND ');
+      query += ' ORDER BY time_sent DESC';
+  
+      // console.log(query, vals);  // uncomment to inspect the final SQL
+      const rs = await pool.query(query, vals);
+      res.json(rs.rows);
+    } catch (e) {
+      console.error(e);
+      res.status(500).send('Error fetching notifications');
+    }
+  });  
 
 /* ────────────────────────────────────
    GET /notifications/:id  — by ID

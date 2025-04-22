@@ -12,4 +12,12 @@ const pool = new Pool({
   }
 });
 
+pool.query('SELECT NOW()', (err, res) => {
+  if (err) {
+    console.error('Error connecting to DB:', err);
+  } else {
+    console.log('Connected to DB at:', res.rows[0].now);
+  }
+});
+
 module.exports = pool;

@@ -1,0 +1,24 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensures the page is at least viewport height */
+}
+
+.header-image {
+  z-index: 10000;
+  width: 100%;
+  height: auto;
+  display: block;
+  position: fixed;
+  top: 0;
+}
+
+.spacer {
+  flex-grow: 1; /* Pushes main-window-wrapper to the bottom */
+  min-height: calc(100vh - 80vh - 6vh); /* Ensures mainWindow starts at bottom: 6vh */
+}
+
+.main-window-wrapper {
+  padding-left: 4vw; /* Mimics left: 4vw */
+  padding-bottom: 6vh; /* Mimics bottom: 6vh */
+}

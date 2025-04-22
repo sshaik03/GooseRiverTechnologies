@@ -1,0 +1,294 @@
+/* Base SideWindow Styles */
+.side-window {
+  position: fixed;
+  right: 4vw;
+  bottom: 6vh;
+  width: 25vw;
+  height: 80vh;
+  background-color: #f6f6f6;
+  border-radius: 20px;
+  box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Normal Mode Header & Content --- */
+
+/* Normal Mode Header */
+.side-window-header {
+  height: 12.5%;
+  background-color: white;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Container for the header buttons (normal mode) */
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 90%;
+}
+
+/* Header buttons styling (normal mode) */
+.header-button {
+  width: 30%;
+  color: white;
+  font-family: 'Jost', sans-serif;
+  font-size: 1.25rem;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-button:hover {
+  filter: brightness(90%);
+}
+
+.button-text {
+  text-align: left;
+  flex: 1;
+}
+
+.button-icon {
+  margin-left: 0.5rem;
+}
+
+/* Normal Mode Content */
+.side-window-content {
+  height: 70.5%;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.state-content {
+  text-align: center;
+}
+
+.state-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.state-icon {
+  color: rgb(128, 128, 128);
+}
+
+.side-window-content p {
+  font-family: 'Jost', sans-serif;
+  font-size: 1.5rem;
+  color: rgb(128, 128, 128);
+  margin: 1rem;
+}
+
+/* --- Compose Mode Styles --- */
+
+/* Compose Mode Header */
+.compose-header {
+  height: 12.5%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+}
+
+.compose-header-text {
+  flex: 1;
+  text-align: center;
+  font-family: 'Jost', sans-serif;
+  font-size: 1.5rem;
+  color: black;
+  margin-right: 2rem;
+}
+
+/* Compose Mode Content */
+.compose-content {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+/* Compose Form Styles */
+.compose-form {
+  margin-bottom: 0.5rem;
+}
+
+.compose-form .form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-family: 'Jost', sans-serif;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: 'Jost', sans-serif;
+  font-size: 1rem;
+}
+
+.form-group textarea {
+  height: 160px;
+  resize: vertical;
+}
+
+/* Compose Footer */
+.compose-footer {
+  margin-top: 0.5rem;
+}
+
+.mark-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.mark-button {
+  flex: 1;
+  margin: 0 0.25rem;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 10px; /* Increased for more rounded corners */
+  color: white;
+  font-family: 'Jost', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: filter 0.3s, background-color 0.3s; /* Added transition for hover/active and background color */
+}
+
+.mark-button:hover {
+  filter: brightness(110%); /* Brighten on hover */
+}
+
+.mark-button:active {
+  filter: brightness(90%); /* Darken on click */
+}
+
+.mark-button.selected {
+  filter: brightness(120%); /* Slightly lighter when selected */
+}
+
+.send-button {
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 10px; /* Increased for more rounded corners */
+  padding: 0.75rem 1.5rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0 auto;
+  transition: filter 0.3s, background-color 0.3s; /* Added transition for hover/active and background color */
+}
+
+.send-button:hover {
+  filter: brightness(130%); /* Brighten on hover */
+}
+
+.send-button:active {
+  filter: brightness(90%); /* Darken on click */
+}
+
+/* --- Responsive Adjustments --- */
+
+@media screen and (max-width: 1024px) {
+  .side-window {
+      width: 35vw;
+      height: 70vh;
+      right: 3vw;
+      bottom: 5vh;
+  }
+  .header-button,
+  .compose-header-text {
+      font-size: 1.1rem;
+  }
+  .side-window-content p {
+      font-size: 1.3rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .side-window {
+      width: 80vw;
+      height: 60vh;
+      right: 10vw;
+      bottom: 5vh;
+  }
+  .header-button {
+      width: 32%;
+      font-size: 1rem;
+      padding: 0.35rem 0.5rem;
+  }
+  .side-window-header,
+  .compose-header {
+      height: 15%;
+  }
+  .side-window-content,
+  .compose-content {
+      height: 70%;
+      padding: 8px;
+  }
+  .side-window-content p {
+      font-size: 1.1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .side-window {
+      width: 90vw;
+      height: 50vh;
+      right: 5vw;
+      bottom: 4vh;
+  }
+  .header-button,
+  .compose-header-text {
+      font-size: 0.9rem;
+      padding: 0.3rem 0.5rem;
+  }
+  .side-window-content p {
+      font-size: 1rem;
+  }
+}

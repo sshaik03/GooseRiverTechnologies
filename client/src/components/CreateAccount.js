@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../css/CreateAccount.css';
 
 const CreateAccount = ({ onRegisterSuccess }) => {
   const [form, setForm] = useState({

@@ -96,6 +96,27 @@ app.post('/login', async (req, res) => {
 /*─────────────────────────────────────
   POST /notifications  — create
 ─────────────────────────────────────*/
+
+app.post('/user-by-username-or-email', async (req, res) => {
+  const { recipient } = req.body;
+  if (!recipient)
+    return res.status(400).json({ message: 'Recipient required' });
+
+  try {
+    const rs = await pool.query(
+      'SELECT unique_id FROM user_info WHERE username = $1 OR email = $1 LIMIT 1',
+      [recipient]
+    );
+    if (!rs.rows.length)
+      return res.status(404).json({ message: 'Recipient not found' });
+
+    res.json(rs.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error fetching recipient' });
+  }
+});
+
 app.post('/notifications', async (req, res) => {
   const {
     notification_type,

@@ -1,8 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Jost', sans-serif;
+  background-color: #f0f0f0; /* Light gray background for the page */
+  /* Body flex styles center the .App div */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
 .App {
   display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Ensures the page is at least viewport height */
+  flex-direction: column; /* Still column for overall page flow */
+  min-height: 100vh;
+  /* These styles center the direct child of .App */
+  /* This will center either the login/create container or the main-layout-container */
+  justify-content: center; /* Centers content vertically */
+  align-items: center; /* Centers content horizontally */
+  width: 100%; /* Allow .App to take full width */
+  /* Add a small gap between elements in the column layout */
+  gap: 1.5rem; /* Adjust gap as needed */
 }
+
+/* Styles for the title text container */
+.app-title-container {
+  text-align: center; /* Center the text within the container */
+  margin-bottom: 1rem; /* Add space below the title container */
+  /* Since .App is a column flex container with align-items: center,
+     this container will be centered horizontally. */
+}
+
+.app-title {
+  font-size: 3rem; /* Large size for the main title */
+  font-weight: 700;
+  color: #333; /* Dark color */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
+
+.app-subtitle {
+  font-size: 1rem; /* Smaller size for the subtitle */
+  font-weight: 400;
+  color: #555; /* Slightly lighter color */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  margin-top: 0.25rem; /* Small space between title and subtitle */
+}
+
+
+/* Remove padding from the main-window-wrapper */
+.main-window-wrapper {
+  /* padding-left: 0; */
+  /* padding-bottom: 0; */
+  /* You might need flex-shrink: 0; if the windows are shrinking unexpectedly */
+}
+
+/* New container for the main page layout */
+.main-layout-container {
+  display: flex; /* Arrange children side-by-side */
+  flex-direction: row;
+  justify-content: center; /* Center Main and Side windows horizontally within this container */
+  align-items: center; /* Align Main and Side windows vertically within this container */
+  gap: 2rem; /* Adjust this value for desired space between the windows */
+  width: 100%; /* Allow the container to take necessary width */
+   max-width: calc(63vw + 25vw + 2rem); /* Approx max width of content + gap */
+
+  /* If you need vertical space above/below when centered, add padding here */
+  /* padding: 2rem 0; */
+}
+
 
 .header-image {
   z-index: 10000;
@@ -13,12 +82,4 @@
   top: 0;
 }
 
-.spacer {
-  flex-grow: 1; /* Pushes main-window-wrapper to the bottom */
-  min-height: calc(100vh - 80vh - 6vh); /* Ensures mainWindow starts at bottom: 6vh */
-}
-
-.main-window-wrapper {
-  padding-left: 4vw; /* Mimics left: 4vw */
-  padding-bottom: 6vh; /* Mimics bottom: 6vh */
-}
+/* Any other global App styles... */

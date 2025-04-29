@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../css/SideWindow.css';
 import { IoStar, IoSend, IoReader, IoChevronBack } from 'react-icons/io5';
+import { getUserFromToken } from '../utils/auth'; // adjust path if needed
 
 const SideWindow = ({ headerColor, mode, setSideWindowMode }) => {
   // In normal mode, we track which sub-state is active ("stars", "sent", "drafts")
@@ -9,6 +10,9 @@ const SideWindow = ({ headerColor, mode, setSideWindowMode }) => {
 
   // State to track the selected category in compose mode ("news", "policies", "claims")
   const [selectedCategory, setSelectedCategory] = useState("news");
+  const [recipients, setRecipients] = useState('');
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
 
   // Define the categories and their colors
   const categories = {
@@ -17,59 +21,115 @@ const SideWindow = ({ headerColor, mode, setSideWindowMode }) => {
     claims: { name: "Claims", color: '#ff9b22' },
   };
 
+  const handleSend = async () => {
+    const user = getUserFromToken();
+    if (!user) {
+      alert('You must be logged in to send a message.');
+      return;
+    }
+
+    if (!recipients || !title || !body) {
+      alert('Please fill out all fields.');
+      return;
+    }
+
+    try {
+      // 1. Fetch recipient's unique_id
+      const res1 = await fetch('http://localhost:4000/user-by-username-or-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recipient: recipients })
+      });
+      const recipientData = await res1.json();
+      if (!res1.ok) throw new Error(recipientData.message);
+
+      const recipient_id = recipientData.unique_id;
+
+      // 2. Send the message
+      const res2 = await fetch('http://localhost:4000/notifications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          notification_type: selectedCategory === "policies" ? "policy" : selectedCategory,
+          sender_id: user.user_id,
+          recipient_id,
+          subject: title,
+          body,
+          is_important: false
+        })
+      });
+
+      const result = await res2.json();
+      if (!res2.ok) throw new Error(result.message);
+
+      alert('Message sent successfully!');
+      // Clear fields
+      setRecipients('');
+      setTitle('');
+      setBody('');
+      setSelectedCategory('news');
+      setSideWindowMode('normal'); // optionally close compose window
+    } catch (err) {
+      console.error('Error sending message:', err);
+      alert('Failed to send message: ' + err.message);
+    }
+  };
+
   if (mode === "compose") {
     return (
       <div className="side-window">
-        {/* Compose Mode Header */}
         <div className="compose-header">
           <button className="back-button" onClick={() => setSideWindowMode('normal')}>
             <IoChevronBack size={24} />
           </button>
           <span className="compose-header-text">New Message</span>
         </div>
-        {/* Compose Form Content */}
         <div className="compose-content">
           <div className="compose-form">
             <div className="form-group">
               <label>Recipients</label>
-              <input type="text" placeholder="Enter recipients" />
+              <input
+                type="text"
+                placeholder="Enter recipient username or email"
+                value={recipients}
+                onChange={(e) => setRecipients(e.target.value)}
+              />
             </div>
             <div className="form-group">
               <label>Title</label>
-              <input type="text" placeholder="Enter title" />
+              <input
+                type="text"
+                placeholder="Enter title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </div>
             <div className="form-group">
               <label>Body</label>
-              <textarea placeholder="Enter message body"></textarea>
+              <textarea
+                placeholder="Enter message body"
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+              />
             </div>
           </div>
           <div className="compose-footer">
             <div className="mark-buttons">
-              <button
-                className={`mark-button ${selectedCategory === "news" ? "selected" : ""}`}
-                style={{ backgroundColor: categories.news.color }}
-                onClick={() => setSelectedCategory("news")}
-              >
-                News
-              </button>
-              <button
-                className={`mark-button ${selectedCategory === "policies" ? "selected" : ""}`}
-                style={{ backgroundColor: categories.policies.color }}
-                onClick={() => setSelectedCategory("policies")}
-              >
-                Policies
-              </button>
-              <button
-                className={`mark-button ${selectedCategory === "claims" ? "selected" : ""}`}
-                style={{ backgroundColor: categories.claims.color }}
-                onClick={() => setSelectedCategory("claims")}
-              >
-                Claims
-              </button>
+              {Object.entries(categories).map(([key, { name, color }]) => (
+                <button
+                  key={key}
+                  className={`mark-button ${selectedCategory === key ? 'selected' : ''}`}
+                  style={{ backgroundColor: color }}
+                  onClick={() => setSelectedCategory(key)}
+                >
+                  {name}
+                </button>
+              ))}
             </div>
             <button
               className="send-button"
               style={{ backgroundColor: categories[selectedCategory].color }}
+              onClick={handleSend}
             >
               <span>Send</span>
               <IoSend size={24} />
@@ -80,7 +140,7 @@ const SideWindow = ({ headerColor, mode, setSideWindowMode }) => {
     );
   }
 
-  // Normal mode view (stars, sent, drafts)
+  // Normal mode view
   return (
     <div className="side-window">
       <div className="side-window-header">

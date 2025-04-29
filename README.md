@@ -3,6 +3,7 @@
 # Frontend - To run:
 1. cd client
 2. npm start
+
 3. go to http://localhost:3000 in your browser
 
 
@@ -18,3 +19,4 @@ To run the new backend code ->
 4. Split the terminal to have two instances
 5. First - terminal do | node app.js | to run backend locally and connect to DB.
 6. Second - on the other terminal just run the frontend like normal from up top
+

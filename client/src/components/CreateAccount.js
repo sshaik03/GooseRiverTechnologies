@@ -1,89 +1,117 @@
-import React, { useState } from 'react';
-import './CreateAccount.css';
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap');
 
-export default function CreateAccount() {
-  const [form, setForm] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Jost', sans-serif;
+  background-color: #f0f0f0; /* Light gray background for the page */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.id]: e.target.value });
-  };
+.create-account-container {
+  background-color: white; /* Form container background */
+  padding: 2.5rem;
+  border-radius: 20px; /* Match MainWindow radius */
+  box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.2); /* Softer shadow */
+  width: 100%;
+  max-width: 450px; /* Slightly wider for more fields */
+  text-align: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Spacing between elements */
+}
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+.create-account-container h2 {
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: #333;
+}
 
-    const { username, email, password, confirmPassword } = form;
+.create-account-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
 
-    if (!username || !email || !password || !confirmPassword) {
-      alert('Please fill in all fields.');
-      setIsSubmitting(false);
-      return;
-    }
+/* Style all input types used in the form */
+.create-account-container input[type="text"],
+.create-account-container input[type="email"],
+.create-account-container input[type="password"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px; /* Slightly rounded corners */
+  font-family: 'Jost', sans-serif;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
 
-    if (password !== confirmPassword) {
-      alert('Passwords do not match.');
-      setIsSubmitting(false);
-      return;
-    }
+.create-account-container input:focus {
+  outline: none;
+  border-color: #7D2CFF; /* Highlight focus */
+}
 
-    try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password }),
-        credentials: 'include',
-      });
+/* Target the submit button specifically */
+.create-account-container button[type="submit"] {
+  border: none;
+  background-color: #7D2CFF; /* Theme color (Policies) */
+  color: white;
+  font-family: 'Jost', sans-serif;
+  font-size: 1.1rem; /* Slightly larger */
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem; /* Add some space above button */
+  border-radius: 8px; /* Match input radius */
+  cursor: pointer;
+  transition: filter 0.3s ease;
+  width: 100%; /* Make button full width */
+}
 
-      if (response.ok) {
-        alert('Account created successfully');
-        window.location.href = 'LoginPage.html';
-      } else {
-        const error = await response.json();
-        alert(error.error || 'Registration failed');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+.create-account-container button[type="submit"]:hover:not(:disabled) {
+  filter: brightness(90%); /* Consistent hover effect */
+}
 
-  return (
-    <div className="page">
-      <header className="header-bar">
-        <div className="webLogo">
-          <span className="web-name" onClick={() => window.location.href = '../main-posts-page/index.html'}>
-            Duck Creek Technologies
-          </span>
-        </div>
-      </header>
+.create-account-container button[type="submit"]:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
 
-      <main className="container">
-        <section className="form-box">
-          <h2>Create Account</h2>
-          <input type="text" id="username" className="input" placeholder="Username" value={form.username} onChange={handleChange} />
-          <input type="text" id="email" className="input" placeholder="Email" value={form.email} onChange={handleChange} />
-          <input type="password" id="password" className="input" placeholder="Password" value={form.password} onChange={handleChange} />
-          <input type="password" id="confirmPassword" className="input" placeholder="Confirm Password" value={form.confirmPassword} onChange={handleChange} />
-          <button className="button" onClick={handleSubmit} disabled={isSubmitting}>
-            {isSubmitting ? 'Creating...' : 'Create Account'}
-          </button>
-        </section>
+.create-account-container p {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #555;
+}
 
-        <section className="form-box secondary">
-          <p>Already have an account?</p>
-          <button className="button outline" onClick={() => window.location.href = 'LoginPage.html'}>
-            Sign in here!
-          </button>
-        </section>
-      </main>
-    </div>
-  );
+.link {
+  color: #7D2CFF; /* Theme color */
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments if needed */
+@media (max-width: 480px) {
+  .create-account-container {
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+  .create-account-container button[type="submit"] {
+      font-size: 1rem;
+      padding: 0.6rem 0.8rem;
+  }
+  .create-account-container input[type="text"],
+  .create-account-container input[type="email"],
+  .create-account-container input[type="password"] {
+      font-size: 0.95rem;
+  }
 }

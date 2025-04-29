@@ -1,16 +1,21 @@
 /* Base SideWindow Styles */
 .side-window {
-  position: fixed;
-  right: 4vw;
-  bottom: 6vh;
-  width: 25vw;
-  height: 80vh;
+  /* REMOVE fixed positioning and related properties */
+  /* position: fixed; */
+  /* right: 4vw; */
+  /* bottom: 6vh; */
+  /* Left/Top will also be ignored now */
+
+  width: 25vw;  /* Keep existing size */
+  height: 80vh; /* Keep existing size */
   background-color: #f6f6f6;
   border-radius: 20px;
   box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.25);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  /* Ensure it doesn't shrink in the flex container */
+  flex-shrink: 0;
 }
 
 /* --- Normal Mode Header & Content --- */
@@ -234,12 +239,14 @@
 
 /* --- Responsive Adjustments --- */
 
+/* Keep these media queries, but they will now affect the size of the flex items */
 @media screen and (max-width: 1024px) {
   .side-window {
       width: 35vw;
       height: 70vh;
-      right: 3vw;
-      bottom: 5vh;
+      /* Removed fixed positioning adjustments */
+      /* right: 3vw; */
+      /* bottom: 5vh; */
   }
   .header-button,
   .compose-header-text {
@@ -252,11 +259,14 @@
 
 @media screen and (max-width: 768px) {
   .side-window {
-      width: 80vw;
+      width: 80vw; /* Will stack below main window on smaller screens */
       height: 60vh;
-      right: 10vw;
-      bottom: 5vh;
+      /* Removed fixed positioning adjustments */
+      /* right: 10vw; */
+      /* bottom: 5vh; */
   }
+  /* Adjust gap on main-layout-container for smaller screens in App.css if needed */
+  /* Example: @media (max-width: 768px) { .main-layout-container { flex-direction: column; gap: 1rem; } } */
   .header-button {
       width: 32%;
       font-size: 1rem;
@@ -278,10 +288,11 @@
 
 @media screen and (max-width: 480px) {
   .side-window {
-      width: 90vw;
+      width: 90vw; /* Will stack below main window on smaller screens */
       height: 50vh;
-      right: 5vw;
-      bottom: 4vh;
+      /* Removed fixed positioning adjustments */
+      /* right: 5vw; */
+      /* bottom: 4vh; */
   }
   .header-button,
   .compose-header-text {

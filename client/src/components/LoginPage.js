@@ -1,5 +1,7 @@
+// src/js/loginPage.js
 import React, { useState } from 'react';
-import '../css/LoginPage.css';  // Importing the CSS file
+import '../css/LoginPage.css';
+import logo from '../images/gooseRiverLogo.png';
 
 const LoginPage = ({ onLoginSuccess, onRegisterClick }) => {
   const [username, setUsername] = useState('');
@@ -23,9 +25,8 @@ const LoginPage = ({ onLoginSuccess, onRegisterClick }) => {
 
       if (response.ok) {
         alert('Login successful');
-        // Optionally store token: localStorage.setItem('token', data.token);
-        localStorage.setItem('token', data.token); // Save token to localStorage
-        onLoginSuccess(); // go to main window
+        localStorage.setItem('token', data.token);
+        onLoginSuccess();
       } else {
         setError(data.message || 'Login failed');
       }
@@ -38,40 +39,43 @@ const LoginPage = ({ onLoginSuccess, onRegisterClick }) => {
   };
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          className="input"  // Applying the input class from CSS
-          type="text"
-          placeholder="Username or Email"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          className="input"  // Applying the input class from CSS
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button className="button" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
+    <div className="login-page">
+      <img src={logo} alt="Goose River Logo" className="goose-river-logo" />
+      <div className="login-container">
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            className="input"
+            type="text"
+            placeholder="Username or Email"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            className="input"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button className="button" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Logging in...' : 'Login'}
+          </button>
+        </form>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      <p>
-        Don’t have an account?{' '}
-        <span
-          className="link"
-          onClick={onRegisterClick}
-          style={{ cursor: 'pointer', color: 'blue' }}
-        >
-          Create one
-        </span>
-      </p>
+        <p>
+          Don’t have an account?{' '}
+          <span
+            className="link"
+            onClick={onRegisterClick}
+            style={{ cursor: 'pointer' }}
+          >
+            Create one
+          </span>
+        </p>
+      </div>
     </div>
   );
 };

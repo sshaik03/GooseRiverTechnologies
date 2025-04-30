@@ -1,3 +1,4 @@
+/* src/App.css */
 @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap');
 
 body {
@@ -5,7 +6,6 @@ body {
   padding: 0;
   font-family: 'Jost', sans-serif;
   background-color: #f0f0f0; /* Light gray background for the page */
-  /* Body flex styles center the .App div */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,72 +14,60 @@ body {
 
 .App {
   display: flex;
-  flex-direction: column; /* Still column for overall page flow */
+  flex-direction: column; /* Overall page flow */
   min-height: 100vh;
-  /* These styles center the direct child of .App */
-  /* This will center either the login/create container or the main-layout-container */
-  justify-content: center; /* Centers content vertically */
-  align-items: center; /* Centers content horizontally */
-  width: 100%; /* Allow .App to take full width */
-  /* Add a small gap between elements in the column layout */
-  gap: 1.5rem; /* Adjust gap as needed */
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  width: 100%;
+  gap: 1.5rem;
+}
+
+/* Small logo at top-left */
+.header-image {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 80px;     /* Much smaller */
+  height: auto;
+  z-index: 10000;
 }
 
 /* Styles for the title text container */
 .app-title-container {
-  text-align: center; /* Center the text within the container */
-  margin-bottom: 1rem; /* Add space below the title container */
-  /* Since .App is a column flex container with align-items: center,
-     this container will be centered horizontally. */
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 .app-title {
-  font-size: 3rem; /* Large size for the main title */
+  font-size: 3rem;
   font-weight: 700;
-  color: #333; /* Dark color */
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
+  color: #333;
+  margin: 0;
+  padding: 0;
 }
 
 .app-subtitle {
-  font-size: 1rem; /* Smaller size for the subtitle */
+  font-size: 1rem;
   font-weight: 400;
-  color: #555; /* Slightly lighter color */
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
-  margin-top: 0.25rem; /* Small space between title and subtitle */
+  color: #555;
+  margin: 0;
+  padding: 0;
+  margin-top: 0.25rem;
 }
-
 
 /* Remove padding from the main-window-wrapper */
 .main-window-wrapper {
   /* padding-left: 0; */
   /* padding-bottom: 0; */
-  /* You might need flex-shrink: 0; if the windows are shrinking unexpectedly */
 }
 
-/* New container for the main page layout */
+/* Main page layout */
 .main-layout-container {
-  display: flex; /* Arrange children side-by-side */
+  display: flex;
   flex-direction: row;
-  justify-content: center; /* Center Main and Side windows horizontally within this container */
-  align-items: center; /* Align Main and Side windows vertically within this container */
-  gap: 2rem; /* Adjust this value for desired space between the windows */
-  width: 100%; /* Allow the container to take necessary width */
-   max-width: calc(63vw + 25vw + 2rem); /* Approx max width of content + gap */
-
-  /* If you need vertical space above/below when centered, add padding here */
-  /* padding: 2rem 0; */
-}
-
-
-.header-image {
-  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
   width: 100%;
-  height: auto;
-  display: block;
-  position: fixed;
-  top: 0;
+  max-width: calc(63vw + 25vw + 2rem);
 }
-
-/* Any other global App styles... */

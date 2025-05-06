@@ -1,0 +1,59 @@
+/* src/css/Notification.css */
+
+.notification-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;    /* stack children at the top */
+    width: 100%;
+    background: white;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  
+  .notification-dot {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  
+  .notification-content {
+    flex: 1;             /* fill available width */
+    min-width: 0;        /* allow it to shrink for ellipsis */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .notification-subject {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    white-space: nowrap;      /* one-line clamp */
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .notification-body {
+    margin: 0.25rem 0 0;
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.3;
+    white-space: nowrap;      /* one-line clamp */
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .notification-time {
+    margin-left: auto;        /* push to the far right */
+    align-self: flex-end;     /* drop down to bottom padding */
+    font-size: 0.85rem;
+    color: #888;
+    white-space: nowrap;
+  }
+  

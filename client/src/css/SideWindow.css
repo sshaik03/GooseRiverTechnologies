@@ -293,14 +293,19 @@
 }
 
 .view-message-details h3 {
-  margin: 0 0 0.5rem 0;
+  margin-top: 0rem;
+  margin-bottom: 0.5rem;
+  margin-left: .5rem;
+  margin-right: .5rem;
   font-size: 1.25rem;
   font-weight: 700;
   color: #333;
 }
 
 .view-message-details p {
-  margin: 0 0 1rem 0;
+  margin-bottom: 1rem;
+  margin-left: .5rem;
+  margin-right: .5rem;
   font-size: 1rem;
   color: #555;
   line-height: 1.4;
@@ -314,6 +319,8 @@
   color: #888;
   text-align: right; /* Align time to the right */
   margin-top: 0.5rem;
+  margin-left: .5rem;
+  margin-right: .5rem;
 }
 
 /* Styles for the Reply Area (New) */

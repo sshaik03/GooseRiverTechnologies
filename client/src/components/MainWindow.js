@@ -63,68 +63,73 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
 
   return (
     <div className="main-window">
-      {/* Top Row: Tabs (left) & Pagination (right) */}
-      <div className="tab-pagination-header">
-        <div className="tab-header">
-          {tabs.map((tab) => (
-            <button
-              key={tab.name}
-              className={`tab-button ${activeTab === tab.name ? 'active' : ''}`}
-              style={{ color: tab.color }}
-              onClick={() => {
-                setActiveTab(tab.name);
-                setHeaderColor(tab.color);
-                // setSideWindowMode('normal'); // Optionally keep side window mode
-              }}
-            >
-              {tab.name}
+      {/* --- Container for sticky header --- */}
+      {/* This div is now part of the normal flow, becoming sticky when it reaches 'top' */}
+      <div className="fixed-header-area">
+        {/* Top Row: Tabs (left) & Pagination (right) */}
+        <div className="tab-pagination-header">
+          <div className="tab-header">
+            {tabs.map((tab) => (
+              <button
+                key={tab.name}
+                className={`tab-button ${activeTab === tab.name ? 'active' : ''}`}
+                style={{ color: tab.color }}
+                onClick={() => {
+                  setActiveTab(tab.name);
+                  setHeaderColor(tab.color);
+                  // setSideWindowMode('normal'); // Optionally keep side window mode
+                }}
+              >
+                {tab.name}
+              </button>
+            ))}
+          </div>
+          <div className="pagination">
+            <span>Page {currentPage + 1} of {totalPages}</span>
+            <button onClick={() => setCurrentPage(0)} disabled={currentPage === 0}>
+              <IoPlayBackSharp size={20} />
             </button>
-          ))}
+            <button onClick={() => setCurrentPage(p => Math.max(p - 1, 0))} disabled={currentPage === 0}>
+              <IoChevronBackSharp size={20} />
+            </button>
+            <button
+              onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages - 1))}
+              disabled={currentPage >= totalPages - 1}
+            >
+              <IoChevronForwardSharp size={20} />
+            </button>
+            <button onClick={() => setCurrentPage(totalPages - 1)} disabled={currentPage >= totalPages - 1}>
+              <IoPlayForwardSharp size={20} />
+            </button>
+          </div>
         </div>
-        <div className="pagination">
-          <span>Page {currentPage + 1} of {totalPages}</span>
-          <button onClick={() => setCurrentPage(0)} disabled={currentPage === 0}>
-            <IoPlayBackSharp size={20} />
-          </button>
-          <button onClick={() => setCurrentPage(p => Math.max(p - 1, 0))} disabled={currentPage === 0}>
-            <IoChevronBackSharp size={20} />
-          </button>
+
+        {/* Search & Compose */}
+        <div className="search-sort-area">
+          <div className="search">
+            <label>Search:</label>
+            <input type="text" placeholder="Search messages" /> {/* TODO: Add search functionality */}
+          </div>
+          <div className="sort">
+            <label>Sort By:</label>
+            <select> {/* TODO: Add sort functionality */}
+              <option>Newest</option>
+              <option>Oldest</option>
+            </select>
+          </div>
           <button
-            onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages - 1))}
-            disabled={currentPage >= totalPages - 1}
+            className="compose-button"
+            style={{ backgroundColor: activeTabColor }}
+            onClick={() => setSideWindowMode('compose')}
           >
-            <IoChevronForwardSharp size={20} />
-          </button>
-          <button onClick={() => setCurrentPage(totalPages - 1)} disabled={currentPage >= totalPages - 1}>
-            <IoPlayForwardSharp size={20} />
+            <span className="button-text">Compose</span>
+            <IoCreate className="button-icon" size={32} />
           </button>
         </div>
-      </div>
+      </div> {/* --- End of fixed-header-area --- */}
 
-      {/* Search & Compose */}
-      <div className="search-sort-area">
-        <div className="search">
-          <label>Search:</label>
-          <input type="text" placeholder="Search messages" /> {/* TODO: Add search functionality */}
-        </div>
-        <div className="sort">
-          <label>Sort By:</label>
-          <select> {/* TODO: Add sort functionality */}
-            <option>Newest</option>
-            <option>Oldest</option>
-          </select>
-        </div>
-        <button
-          className="compose-button"
-          style={{ backgroundColor: activeTabColor }}
-          onClick={() => setSideWindowMode('compose')}
-        >
-          <span className="button-text">Compose</span>
-          <IoCreate className="button-icon" size={32} />
-        </button>
-      </div>
 
-      {/* Notifications List */}
+      {/* Notifications List - This is the content below the sticky header */}
       <div className="main-content">
         {loading ? (
           <p>Loading notifications...</p>

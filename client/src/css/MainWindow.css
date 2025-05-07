@@ -5,7 +5,7 @@
   width: 63vw;
   /* always at least 80vh tall, but grow downward as needed */
   min-height: 86.75vh;
-  height: auto;
+  height: auto; /* Allow it to grow */
   background-color: #f6f6f6;
   border-radius: 20px;
   box-shadow: 0 4px 40px rgba(0, 0, 0, 0.25);
@@ -13,9 +13,46 @@
   display: flex;
   flex-direction: column;
   overflow-x: hidden;    /* no horizontal scroll */
-  overflow-y: visible;   /* let the panel itself extend */
+
+  /* Keep overflow visible so ancestor (body) handles the scroll. */
+  overflow-y: visible; /* Crucial for sticky to work relative to body scroll */
+
+  /* Keep the margin bottom as requested */
   margin-bottom: 3.5vw;
+
+  /* Remove padding-top added for internal scrolling compensation */
+  /* padding-top: 7rem; */ /* Remove or comment out */
 }
+
+/* --- Style for the sticky header container --- */
+.fixed-header-area {
+  /* --- Use sticky positioning --- */
+  position: sticky; /* Make this container stick as the page scrolls */
+
+  /* --- Define where it should stick --- */
+  /* TEMPORARILY CHANGE TO 0 to test if sticky works at all */
+  /* If this works, the issue is with the calc() value or how the layout affects it */
+  top: 0; /* Stick to the very top of the viewport when scrolling */
+
+  z-index: 10;      /* Ensure it layers above scrolling content */
+  background-color: #f6f6f6; /* Background to cover content as it scrolls underneath */
+
+  /* Apply the top border radius here so it stays with the sticky header */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+
+  /* Add a combined shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+
+  /* Ensure the contents within the sticky header area stack correctly */
+  display: flex;
+  flex-direction: column;
+
+  /* Sticky elements need a defined position in their flow */
+  /* Ensure it takes the full width of its parent (.main-window) */
+  width: 100%; /* Should match the width of the .main-window */
+}
+
 
 .tab-pagination-header {
   display: flex;
@@ -23,10 +60,12 @@
   align-items: center;
   padding: 0.75rem 1rem;
   background-color: white;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  flex-shrink: 0;        /* stick at the top of the panel */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Remove top border radius from here, moved to .fixed-header-area */
+  border-top-left-radius: 0; /* Set to 0 or remove */
+  border-top-right-radius: 0; /* Set to 0 or remove */
+  flex-shrink: 0;
+  /* Remove shadow from here, moved to .fixed-header-area */
+  box-shadow: none; /* Or remove the line */
 }
 
 .tab-header {
@@ -83,8 +122,9 @@
   align-items: center;
   padding: 1rem;
   background-color: white;
-  flex-shrink: 0;        /* stick directly below the header */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  /* Remove shadow from here, moved to .fixed-header-area */
+  box-shadow: none; /* Or remove the line */
 }
 
 .search,
@@ -140,7 +180,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* Added transition for smooth color changes */
   transition: background-color 0.3s ease-in-out, filter 0.3s ease-in-out;
 }
 
@@ -160,9 +199,16 @@
 .main-content {
   flex: 1;
   background-color: #f6f6f6;
+  /* Keep content overflow visible */
+  overflow: visible;
+  min-height: 0; /* Important for flex items */
+
+  /* Keep original padding */
   padding: 1rem;
-  overflow: visible;     /* the panel expands, not scrolls internally */
+
+  /* No extra margin-top needed if sticky works correctly */
 }
+
 
 .notification-list {
   display: flex;

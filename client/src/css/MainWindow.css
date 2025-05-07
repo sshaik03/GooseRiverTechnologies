@@ -14,7 +14,7 @@
   flex-direction: column;
   overflow-x: hidden;    /* no horizontal scroll */
   overflow-y: visible;   /* let the panel itself extend */
-  margin-bottom: 2.5vw;
+  margin-bottom: 3.5vw;
 }
 
 .tab-pagination-header {

@@ -16,9 +16,8 @@ body {
 .App {
   display: flex;
   flex-direction: column; /* Overall page flow */
-  /* min-height: 100vh; /* Removed, let body handle viewport height. App grows with content. */
   width: 100%; /* Takes full width for its content alignment */
-  align-items: center; /* Horizontally centers its children like .main-layout-container */
+  /* REMOVE: align-items: center; */ /* No longer centering children horizontally - Positioning handled by .main-layout-container margins */
 
   /* Adjust this padding to set the desired distance from the top of the page for your main content area */
   padding-top: 3vh; /* Example: Pushes content (login, register, main-layout-container) down from the top of .App */
@@ -28,7 +27,7 @@ body {
 .header-image {
   position: fixed;
   top: 0px;
-  left: -5px;
+  left: -3px;
   width: 80px;     /* Much smaller */
   height: auto;
   z-index: 10000;
@@ -57,25 +56,32 @@ body {
   margin-top: 0.25rem;
 }
 
-/* Remove padding from the main-window-wrapper (no changes needed here from original) */
 .main-window-wrapper {
-  /* padding-left: 0; */
-  /* padding-bottom: 0; */
+  /* No changes needed here */
 }
 
 /* Main page layout */
 .main-layout-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center; /* Horizontally centers the (MainWindow + SideWindow) group */
-  align-items: flex-start; /* Key change: Align items (MainWindow, SideWindow) to the top of this container. */
-                           /* This ensures MainWindow's and SideWindow's tops are aligned. */
-                           /* When MainWindow grows, SideWindow stays aligned at the top. */
-  gap: 2rem;
-  width: 100%; /* This width will be constrained by .App's align-items:center and its own max-width */
-  max-width: calc(63vw + 25vw + 2rem);
-  /* Add a margin-top if you want specific space between the .App's padding-top and this container */
-  /* For example, if .app-title-container is not present on 'main' page, this margin ensures space. */
-  /* If .App's padding-top is sufficient, this might not be needed or can be adjusted. */
-  margin-top: 1rem; /* Example: specific spacing for the main content block */
+  display: flex; /* Keep flex to manage the single child (MainWindow wrapper) */
+  flex-direction: row; /* Keep direction */
+  /* REMOVE: justify-content: center; */ /* No longer centering two items */
+  align-items: flex-start; /* Keep: Aligns MainWindow wrapper to the top */
+  /* REMOVE: gap: 2rem; */ /* No longer a gap between flex items here */
+
+  width: 100%; /* Allows it to take up width, positioning handled by margins */
+  max-width: calc(63vw + 25vw + 2rem); /* Keep original max-width for conceptual spacing */
+
+  /* Add margin-top if you want specific space */
+  margin-top: 2rem;
+
+  /* Position the container explicitly to shift the MainWindow left */
+  /* Calculate the desired left margin: */
+  /* The SideWindow is fixed at right: 4vw, width: 25vw. Its left edge is at 100vw - 4vw - 25vw = 71vw. */
+  /* We want a 2rem gap between the MainWindow and the SideWindow. */
+  /* The desired right edge of the MainWindow is 71vw - 2rem. */
+  /* The MainWindow's width is 63vw. */
+  /* The desired left edge of the MainWindow is (71vw - 2rem) - 63vw = 8vw - 2rem. */
+  /* The main-layout-container starts where the MainWindow starts. */
+  margin-left: calc(-24vw - 2rem); /* Set left margin to the desired left edge position */
+  margin-right: auto; /* Use auto margin on the right to allow it to take space */
 }

@@ -2,11 +2,14 @@
 
 /* Base SideWindow Styles */
 .side-window {
-  /* REMOVE fixed positioning and related properties */
-  /* position: fixed; */
-  /* right: 4vw; */
-  /* bottom: 6vh; */
-  /* Left/Top will also be ignored now */
+  /* Bring back fixed positioning */
+  position: fixed;
+  /* Set its position relative to the viewport */
+  right: 4vw; /* Distance from the right edge of the viewport */
+  /* Calculate the top position based on the layout in App.css */
+  /* App padding-top (3vh) + main-layout-container margin-top (1rem) */
+  top: calc(5vh + 1rem);
+
   width: 25vw;
   height: 86.75vh; /* MODIFIED: Increased from 80vh. Adjust as needed. */
   background-color: #f6f6f6;
@@ -15,25 +18,25 @@
   overflow: hidden; /* Ensures content clipping and respects border-radius */
   display: flex;
   flex-direction: column;
-  /* Ensure it doesn't shrink in the flex container */
-  flex-shrink: 0;
+
+  /* flex-shrink is not needed for fixed elements */
+  /* REMOVE: flex-shrink: 0; */
 }
 
-/* --- Normal Mode Header & Content --- */
+/* ... (rest of your SideWindow.css remains the same) ... */
 
-/* Normal Mode Header */
+/* --- Normal Mode Header & Content --- */
 .side-window-header {
-  height: 12.5%; /* This percentage will now apply to the new SideWindow height (e.g., 85vh) */
+  height: 12.5%;
   background-color: white;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0; /* Prevent header from shrinking */
+  flex-shrink: 0;
 }
 
-/* Container for the header buttons (normal mode) */
 .button-container {
   display: flex;
   justify-content: center;
@@ -42,7 +45,6 @@
   width: 90%;
 }
 
-/* Header buttons styling (normal mode) */
 .header-button {
   width: 30%;
   color: white;
@@ -71,16 +73,14 @@
   margin-left: 0.5rem;
 }
 
-/* Normal Mode Content */
 .side-window-content {
-  /* height: 70.5%; */ /* Removed fixed height in previous step */
-  flex-grow: 1;       /* Retained: This makes the content area fill remaining vertical space */
-  min-height: 0;      /* Retained: Good practice for flex children */
+  flex-grow: 1;
+  min-height: 0;
   padding: 16px;
-  overflow-y: auto;   /* Allows internal scrolling if the centered content ever becomes too tall */
-  display: flex;      /* Enables flexbox for centering its child */
-  justify-content: center; /* Horizontally centers .state-content */
-  align-items: center;     /* Vertically centers .state-content */
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .state-content {
@@ -107,14 +107,13 @@
 
 /* --- Compose Mode Styles --- */
 
-/* Compose Mode Header */
 .compose-header {
-  height: 12.5%; /* Matches normal mode header height percentage */
+  height: 12.5%;
   background-color: white;
   display: flex;
   align-items: center;
   padding: 0 1rem;
-  flex-shrink: 0; /* Prevent header from shrinking */
+  flex-shrink: 0;
 }
 
 .back-button {
@@ -130,21 +129,19 @@
   font-family: 'Jost', sans-serif;
   font-size: 1.5rem;
   color: black;
-  margin-right: 2rem; /* To balance the space taken by the back button icon */
+  margin-right: 2rem;
 }
 
-/* Compose Mode Content */
 .compose-content {
-  flex: 1; /* This already correctly makes compose content fill available space */
+  flex: 1;
   padding: 16px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Content aligns to top in compose mode */
+  justify-content: flex-start;
   gap: 0.5rem;
 }
 
-/* Compose Form Styles */
 .compose-form {
   margin-bottom: 0.5rem;
 }
@@ -177,11 +174,10 @@
 }
 
 .form-group textarea {
-  height: 210px;
+  height: 210px; /* Example: Adjusted height based on previous request */
   resize: vertical;
 }
 
-/* Compose Footer */
 .compose-footer {
   margin-top: 0.5rem;
 }
@@ -244,11 +240,14 @@
 }
 
 /* --- Responsive Adjustments --- */
-/* Note: If you changed the base height of .side-window, you might want to adjust these heights too. */
+/* Note: You might need to adjust the top/right values in the media queries as well if you want it to stay fixed but move at different screen sizes. */
 @media screen and (max-width: 1024px) {
   .side-window {
       width: 35vw;
       height: 70vh; /* Consider adjusting if base height changed significantly */
+      /* Adjust fixed position if needed for this breakpoint */
+      /* top: calc(3vh + 1rem); */
+      /* right: 4vw; */
   }
   .header-button,
   .compose-header-text {
@@ -263,6 +262,9 @@
   .side-window {
       width: 80vw;
       height: 60vh; /* Consider adjusting */
+      /* Adjust fixed position if needed for this breakpoint */
+      /* top: calc(3vh + 1rem); */
+      /* right: 4vw; */
   }
   .header-button {
       width: 32%;
@@ -282,6 +284,9 @@
   .side-window {
       width: 90vw;
       height: 50vh; /* Consider adjusting */
+      /* Adjust fixed position if needed for this breakpoint */
+      /* top: calc(3vh + 1rem); */
+      /* right: 4vw; */
   }
   .header-button,
   .compose-header-text {

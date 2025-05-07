@@ -23,8 +23,6 @@
   /* REMOVE: flex-shrink: 0; */
 }
 
-/* ... (rest of your SideWindow.css remains the same) ... */
-
 /* --- Normal Mode Header & Content --- */
 .side-window-header {
   height: 12.5%;
@@ -114,6 +112,8 @@
   align-items: center;
   padding: 0 1rem;
   flex-shrink: 0;
+  border-top-left-radius: 20px; /* Ensure radius here too */
+  border-top-right-radius: 20px; /* Ensure radius here too */
 }
 
 .back-button {
@@ -121,6 +121,10 @@
   border: none;
   cursor: pointer;
   color: black;
+  padding: 0.5rem; /* Add padding for clickable area */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .compose-header-text {
@@ -129,6 +133,7 @@
   font-family: 'Jost', sans-serif;
   font-size: 1.5rem;
   color: black;
+  /* Adjust margin to visually center the text */
   margin-right: 2rem;
 }
 
@@ -201,6 +206,15 @@
   transition: filter 0.3s, background-color 0.3s;
 }
 
+.mark-button:first-child {
+    margin-left: 0;
+}
+
+.mark-button:last-child {
+    margin-right: 0;
+}
+
+
 .mark-button:hover {
   filter: brightness(110%);
 }
@@ -239,6 +253,107 @@
   filter: brightness(90%);
 }
 
+
+/* --- View Mode Styles (New) --- */
+.view-header {
+  height: 12.5%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  flex-shrink: 0;
+  border-top-left-radius: 20px; /* Apply top radius here */
+  border-top-right-radius: 20px; /* Apply top radius here */
+}
+
+.view-header-text {
+  flex: 1;
+  text-align: center;
+  font-family: 'Jost', sans-serif;
+  font-size: 1.5rem;
+  color: black;
+  /* Adjust margin to visually center the text */
+  margin-right: 2rem; /* Add margin to offset the back button */
+}
+
+
+.view-content {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1rem; /* Spacing between elements in view */
+  background-color: #f6f6f6; /* Match side window background */
+}
+
+.view-message-details {
+    margin-bottom: 1rem; /* Space between message content and reply area */
+}
+
+.view-message-details h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.view-message-details p {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.4;
+  white-space: pre-wrap; /* Preserve line breaks from the body text */
+  word-wrap: break-word; /* Break long words */
+}
+
+.view-message-details .view-time {
+  display: block; /* Make it a block element */
+  font-size: 0.9rem;
+  color: #888;
+  text-align: right; /* Align time to the right */
+  margin-top: 0.5rem;
+}
+
+/* Styles for the Reply Area (New) */
+.reply-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: auto; /* Push reply area to the bottom if content is short */
+  /* Add padding-top to create visual separation if margin-top auto is used */
+  padding-top: 1rem;
+  /* Optional: add a border-top to visually separate */
+  /* border-top: 1px solid #ccc; */
+}
+
+.reply-area label {
+  font-family: 'Jost', sans-serif;
+  font-size: 1rem;
+  color: #333;
+}
+
+
+.reply-area textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: 'Jost', sans-serif;
+  font-size: 1rem;
+  height: 100px; /* Default height for reply */
+  resize: vertical; /* Allow vertical resizing */
+}
+
+/* Reuse send-button styles */
+.reply-area .send-button {
+    /* Inherits styles from .send-button */
+    margin-top: 0.5rem; /* Space above the button */
+}
+
+
 /* --- Responsive Adjustments --- */
 /* Note: You might need to adjust the top/right values in the media queries as well if you want it to stay fixed but move at different screen sizes. */
 @media screen and (max-width: 1024px) {
@@ -250,11 +365,21 @@
       /* right: 4vw; */
   }
   .header-button,
-  .compose-header-text {
+  .compose-header-text,
+  .view-header-text { /* Apply to view header too */
       font-size: 1.1rem;
   }
   .side-window-content p {
       font-size: 1.3rem;
+  }
+  .view-message-details h3 { /* Adjust view details font size */
+      font-size: 1.15rem;
+  }
+   .view-message-details p { /* Adjust view details font size */
+      font-size: 0.95rem;
+  }
+   .view-message-details .view-time { /* Adjust view details font size */
+      font-size: 0.85rem;
   }
 }
 
@@ -263,8 +388,8 @@
       width: 80vw;
       height: 60vh; /* Consider adjusting */
       /* Adjust fixed position if needed for this breakpoint */
-      /* top: calc(3vh + 1rem); */
-      /* right: 4vw; */
+      top: calc(3vh + 1rem); /* Keep consistent top */
+      right: 10vw; /* Center it more on smaller screens */
   }
   .header-button {
       width: 32%;
@@ -272,11 +397,26 @@
       padding: 0.35rem 0.5rem;
   }
   .side-window-header,
-  .compose-header {
+  .compose-header,
+  .view-header { /* Apply to view header too */
       height: 15%;
   }
   .side-window-content p {
       font-size: 1.1rem;
+  }
+   .compose-header-text,
+   .view-header-text { /* Apply to view header too */
+      font-size: 1.2rem;
+      margin-right: 1.5rem; /* Adjust margin */
+  }
+   .view-message-details h3 { /* Adjust view details font size */
+      font-size: 1rem;
+  }
+   .view-message-details p { /* Adjust view details font size */
+      font-size: 0.9rem;
+  }
+   .view-message-details .view-time { /* Adjust view details font size */
+      font-size: 0.8rem;
   }
 }
 
@@ -285,15 +425,30 @@
       width: 90vw;
       height: 50vh; /* Consider adjusting */
       /* Adjust fixed position if needed for this breakpoint */
-      /* top: calc(3vh + 1rem); */
-      /* right: 4vw; */
+      top: calc(3vh + 0.5rem); /* Adjust top */
+      right: 5vw; /* Center it more */
   }
   .header-button,
-  .compose-header-text {
+  .compose-header-text,
+  .view-header-text { /* Apply to view header too */
       font-size: 0.9rem;
       padding: 0.3rem 0.5rem;
   }
   .side-window-content p {
       font-size: 1rem;
+  }
+   .compose-header-text,
+   .view-header-text { /* Apply to view header too */
+      font-size: 1rem;
+      margin-right: 1rem; /* Adjust margin */
+  }
+   .view-message-details h3 { /* Adjust view details font size */
+      font-size: 0.95rem;
+  }
+   .view-message-details p { /* Adjust view details font size */
+      font-size: 0.85rem;
+  }
+   .view-message-details .view-time { /* Adjust view details font size */
+      font-size: 0.75rem;
   }
 }

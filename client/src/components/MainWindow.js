@@ -12,8 +12,7 @@ import {
 import { getUserFromToken } from '../utils/auth';
 import Notification from './Notification';
 
-// Changed PAGE_SIZE from 10 to 6 to show fewer messages per page by default
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 10; // Changed back to 10 as per original code, adjust if needed
 
 const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
   const [activeTab, setActiveTab]         = useState('Everything');
@@ -38,7 +37,7 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
         setLoading(false);
         return;
       }
-      const typeMap = { Everything: null, News: 'news', Policies: 'policy', Claims: 'claims' }; // Added Everything mapping
+      const typeMap = { Everything: null, News: 'news', Policies: 'policy', Claims: 'claims' };
       let url = `http://localhost:4000/notifications?recipient_id=${user.user_id}`;
       // Only add type filter if not 'Everything'
       if (typeMap[activeTab]) url += `&notification_type=${typeMap[activeTab]}`;
@@ -57,16 +56,48 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
     fetchNotifications();
   }, [activeTab]); // Depend on activeTab
 
+  // Function to handle marking a notification as read
+  const handleMarkAsRead = async (notificationId) => {
+    try {
+      const res = await fetch(`http://localhost:4000/notifications/${notificationId}`, {
+        method: 'PATCH', // Use PATCH to update a portion of the resource
+        headers: {
+          'Content-Type': 'application/json',
+          // Include auth token if your API requires it
+          // 'Authorization': `Bearer ${getToken()}`
+        },
+        body: JSON.stringify({ is_read: true })
+      });
+
+      if (!res.ok) {
+        // Handle API error
+        const errorData = await res.json();
+        console.error('Failed to mark notification as read:', errorData.message);
+        // Optionally show an error to the user
+        return;
+      }
+
+      // Update the local state to reflect the change immediately
+      setNotifications(prevNotifications =>
+        prevNotifications.map(note =>
+          note._id === notificationId ? { ...note, is_read: true } : note
+        )
+      );
+
+    } catch (e) {
+      console.error('Error marking notification as read:', e);
+      // Optionally show an error to the user
+    }
+  };
+
+
   const totalPages = Math.max(1, Math.ceil(notifications.length / PAGE_SIZE)); // Ensure totalPages is at least 1
   const startIndex = currentPage * PAGE_SIZE;
   const pageItems  = notifications.slice(startIndex, startIndex + PAGE_SIZE);
 
   return (
     <div className="main-window">
-      {/* --- Container for sticky header --- */}
-      {/* This div is now part of the normal flow, becoming sticky when it reaches 'top' */}
       <div className="fixed-header-area">
-        {/* Top Row: Tabs (left) & Pagination (right) */}
         <div className="tab-pagination-header">
           <div className="tab-header">
             {tabs.map((tab) => (
@@ -77,7 +108,6 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
                 onClick={() => {
                   setActiveTab(tab.name);
                   setHeaderColor(tab.color);
-                  // setSideWindowMode('normal'); // Optionally keep side window mode
                 }}
               >
                 {tab.name}
@@ -104,7 +134,6 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
           </div>
         </div>
 
-        {/* Search & Compose */}
         <div className="search-sort-area">
           <div className="search">
             <label>Search:</label>
@@ -126,10 +155,8 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
             <IoCreate className="button-icon" size={32} />
           </button>
         </div>
-      </div> {/* --- End of fixed-header-area --- */}
+      </div>
 
-
-      {/* Notifications List - This is the content below the sticky header */}
       <div className="main-content">
         {loading ? (
           <p>Loading notifications...</p>
@@ -142,12 +169,14 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
           <div className="notification-list">
             {pageItems.map(note => (
               <Notification
-                key={note._id}
+                key={note._id} // Keep the key
+                _id={note._id} // Pass the ID to the child component
                 subject={note.subject}
                 body={note.body}
                 timeSent={note.time_sent}
                 isRead={note.is_read}
                 notificationType={note.notification_type}
+                onMarkAsRead={handleMarkAsRead} // Pass the handler down
               />
             ))}
           </div>

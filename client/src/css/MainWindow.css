@@ -3,18 +3,20 @@
 
 .main-window {
   width: 63vw;
-  height: 80vh;
+  /* always at least 80vh tall, but grow downward as needed */
+  min-height: 86.75vh;
+  height: auto;
   background-color: #f6f6f6;
   border-radius: 20px;
   box-shadow: 0 4px 40px rgba(0, 0, 0, 0.25);
   font-family: 'Jost', sans-serif;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  overflow-x: hidden;
+  overflow-x: hidden;    /* no horizontal scroll */
+  overflow-y: visible;   /* let the panel itself extend */
+  margin-bottom: 2.5vw;
 }
 
-/* Top row: tabs on left, page arrows on right */
 .tab-pagination-header {
   display: flex;
   justify-content: space-between;
@@ -23,7 +25,8 @@
   background-color: white;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  flex-shrink: 0;
+  flex-shrink: 0;        /* stick at the top of the panel */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .tab-header {
@@ -55,7 +58,6 @@
 .pagination button {
   background: none;
   border: none;
-  outline: none;
   padding: 0.25rem;
   cursor: pointer;
 }
@@ -75,16 +77,13 @@
   color: #666;
 }
 
-/* Search & Compose row: now with bottom shadow */
 .search-sort-area {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
   background-color: white;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
+  flex-shrink: 0;        /* stick directly below the header */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -141,6 +140,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* Added transition for smooth color changes */
+  transition: background-color 0.3s ease-in-out, filter 0.3s ease-in-out;
 }
 
 .compose-button:hover {
@@ -156,12 +157,11 @@
   margin-left: 0.5rem;
 }
 
-/* Notifications list */
 .main-content {
   flex: 1;
-  overflow-y: auto;
   background-color: #f6f6f6;
   padding: 1rem;
+  overflow: visible;     /* the panel expands, not scrolls internally */
 }
 
 .notification-list {
@@ -169,7 +169,6 @@
   flex-direction: column;
 }
 
-/* Empty state */
 .empty-state {
   display: flex;
   flex-direction: column;

@@ -12,6 +12,7 @@ import {
 import { getUserFromToken } from '../utils/auth';
 import Notification from './Notification';
 
+// Changed PAGE_SIZE from 10 to 6 to show fewer messages per page by default
 const PAGE_SIZE = 10;
 
 const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
@@ -37,8 +38,9 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
         setLoading(false);
         return;
       }
-      const typeMap = { News: 'news', Policies: 'policy', Claims: 'claims' };
+      const typeMap = { Everything: null, News: 'news', Policies: 'policy', Claims: 'claims' }; // Added Everything mapping
       let url = `http://localhost:4000/notifications?recipient_id=${user.user_id}`;
+      // Only add type filter if not 'Everything'
       if (typeMap[activeTab]) url += `&notification_type=${typeMap[activeTab]}`;
       try {
         const res  = await fetch(url);
@@ -49,13 +51,13 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
         setNotifications([]);
       } finally {
         setLoading(false);
-        setCurrentPage(0);
+        setCurrentPage(0); // Reset page when tab changes
       }
     };
     fetchNotifications();
-  }, [activeTab]);
+  }, [activeTab]); // Depend on activeTab
 
-  const totalPages = Math.ceil(notifications.length / PAGE_SIZE);
+  const totalPages = Math.max(1, Math.ceil(notifications.length / PAGE_SIZE)); // Ensure totalPages is at least 1
   const startIndex = currentPage * PAGE_SIZE;
   const pageItems  = notifications.slice(startIndex, startIndex + PAGE_SIZE);
 
@@ -72,7 +74,7 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
               onClick={() => {
                 setActiveTab(tab.name);
                 setHeaderColor(tab.color);
-                setSideWindowMode('normal');
+                // setSideWindowMode('normal'); // Optionally keep side window mode
               }}
             >
               {tab.name}
@@ -80,13 +82,13 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
           ))}
         </div>
         <div className="pagination">
+          <span>Page {currentPage + 1} of {totalPages}</span>
           <button onClick={() => setCurrentPage(0)} disabled={currentPage === 0}>
             <IoPlayBackSharp size={20} />
           </button>
           <button onClick={() => setCurrentPage(p => Math.max(p - 1, 0))} disabled={currentPage === 0}>
             <IoChevronBackSharp size={20} />
           </button>
-          <span>Page {currentPage + 1} of {totalPages}</span>
           <button
             onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages - 1))}
             disabled={currentPage >= totalPages - 1}
@@ -103,11 +105,11 @@ const MainWindow = ({ setHeaderColor, setSideWindowMode }) => {
       <div className="search-sort-area">
         <div className="search">
           <label>Search:</label>
-          <input type="text" placeholder="Search messages" />
+          <input type="text" placeholder="Search messages" /> {/* TODO: Add search functionality */}
         </div>
         <div className="sort">
           <label>Sort By:</label>
-          <select>
+          <select> {/* TODO: Add sort functionality */}
             <option>Newest</option>
             <option>Oldest</option>
           </select>

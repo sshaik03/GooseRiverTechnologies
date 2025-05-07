@@ -7,35 +7,37 @@ body {
   font-family: 'Jost', sans-serif;
   background-color: #f0f0f0; /* Light gray background for the page */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Horizontally centers the .App container */
+  align-items: flex-start; /* Aligns .App to the top of the body/viewport */
   min-height: 100vh;
+  /* overflow-y: auto; /* Allow body to scroll if .App content is too tall */
 }
 
 .App {
   display: flex;
   flex-direction: column; /* Overall page flow */
-  min-height: 100vh;
-  justify-content: center; /* Center vertically */
-  align-items: center; /* Center horizontally */
-  width: 100%;
-  gap: 1.5rem;
+  /* min-height: 100vh; /* Removed, let body handle viewport height. App grows with content. */
+  width: 100%; /* Takes full width for its content alignment */
+  align-items: center; /* Horizontally centers its children like .main-layout-container */
+
+  /* Adjust this padding to set the desired distance from the top of the page for your main content area */
+  padding-top: 3vh; /* Example: Pushes content (login, register, main-layout-container) down from the top of .App */
 }
 
 /* Small logo at top-left */
 .header-image {
   position: fixed;
   top: 0px;
-  left: 0px;
+  left: -5px;
   width: 80px;     /* Much smaller */
   height: auto;
   z-index: 10000;
 }
 
-/* Styles for the title text container */
+/* Styles for the title text container (used for login/register pages) */
 .app-title-container {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1rem; /* Spacing below title on login/register */
 }
 
 .app-title {
@@ -55,7 +57,7 @@ body {
   margin-top: 0.25rem;
 }
 
-/* Remove padding from the main-window-wrapper */
+/* Remove padding from the main-window-wrapper (no changes needed here from original) */
 .main-window-wrapper {
   /* padding-left: 0; */
   /* padding-bottom: 0; */
@@ -65,9 +67,15 @@ body {
 .main-layout-container {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Horizontally centers the (MainWindow + SideWindow) group */
+  align-items: flex-start; /* Key change: Align items (MainWindow, SideWindow) to the top of this container. */
+                           /* This ensures MainWindow's and SideWindow's tops are aligned. */
+                           /* When MainWindow grows, SideWindow stays aligned at the top. */
   gap: 2rem;
-  width: 100%;
+  width: 100%; /* This width will be constrained by .App's align-items:center and its own max-width */
   max-width: calc(63vw + 25vw + 2rem);
+  /* Add a margin-top if you want specific space between the .App's padding-top and this container */
+  /* For example, if .app-title-container is not present on 'main' page, this margin ensures space. */
+  /* If .App's padding-top is sufficient, this might not be needed or can be adjusted. */
+  margin-top: 1rem; /* Example: specific spacing for the main content block */
 }

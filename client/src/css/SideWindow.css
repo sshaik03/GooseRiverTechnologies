@@ -1,26 +1,29 @@
+/* src/css/SideWindow.css */
+
 /* Base SideWindow Styles */
 .side-window {
-  /* REMOVE fixed positioning and related properties */
-  /* position: fixed; */
-  /* right: 4vw; */
-  /* bottom: 6vh; */
-  /* Left/Top will also be ignored now */
+  /* Bring back fixed positioning */
+  position: fixed;
+  /* Set its position relative to the viewport */
+  right: 4vw; /* Distance from the right edge of the viewport */
+  /* Calculate the top position based on the layout in App.css */
+  /* App padding-top (3vh) + main-layout-container margin-top (1rem) */
+  top: calc(5vh + 1rem);
 
-  width: 25vw;  /* Keep existing size */
-  height: 80vh; /* Keep existing size */
+  width: 25vw;
+  height: 86.75vh; /* MODIFIED: Increased from 80vh. Adjust as needed. */
   background-color: #f6f6f6;
   border-radius: 20px;
   box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.25);
-  overflow: hidden;
+  overflow: hidden; /* Ensures content clipping and respects border-radius */
   display: flex;
   flex-direction: column;
-  /* Ensure it doesn't shrink in the flex container */
-  flex-shrink: 0;
+
+  /* flex-shrink is not needed for fixed elements */
+  /* REMOVE: flex-shrink: 0; */
 }
 
 /* --- Normal Mode Header & Content --- */
-
-/* Normal Mode Header */
 .side-window-header {
   height: 12.5%;
   background-color: white;
@@ -29,9 +32,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
-/* Container for the header buttons (normal mode) */
 .button-container {
   display: flex;
   justify-content: center;
@@ -40,7 +43,6 @@
   width: 90%;
 }
 
-/* Header buttons styling (normal mode) */
 .header-button {
   width: 30%;
   color: white;
@@ -69,9 +71,9 @@
   margin-left: 0.5rem;
 }
 
-/* Normal Mode Content */
 .side-window-content {
-  height: 70.5%;
+  flex-grow: 1;
+  min-height: 0;
   padding: 16px;
   overflow-y: auto;
   display: flex;
@@ -103,13 +105,15 @@
 
 /* --- Compose Mode Styles --- */
 
-/* Compose Mode Header */
 .compose-header {
   height: 12.5%;
   background-color: white;
   display: flex;
   align-items: center;
   padding: 0 1rem;
+  flex-shrink: 0;
+  border-top-left-radius: 20px; /* Ensure radius here too */
+  border-top-right-radius: 20px; /* Ensure radius here too */
 }
 
 .back-button {
@@ -117,6 +121,10 @@
   border: none;
   cursor: pointer;
   color: black;
+  padding: 0.5rem; /* Add padding for clickable area */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .compose-header-text {
@@ -125,10 +133,10 @@
   font-family: 'Jost', sans-serif;
   font-size: 1.5rem;
   color: black;
+  /* Adjust margin to visually center the text */
   margin-right: 2rem;
 }
 
-/* Compose Mode Content */
 .compose-content {
   flex: 1;
   padding: 16px;
@@ -139,7 +147,6 @@
   gap: 0.5rem;
 }
 
-/* Compose Form Styles */
 .compose-form {
   margin-bottom: 0.5rem;
 }
@@ -172,11 +179,10 @@
 }
 
 .form-group textarea {
-  height: 160px;
+  height: 210px; /* Example: Adjusted height based on previous request */
   resize: vertical;
 }
 
-/* Compose Footer */
 .compose-footer {
   margin-top: 0.5rem;
 }
@@ -192,31 +198,40 @@
   margin: 0 0.25rem;
   padding: 0.5rem;
   border: none;
-  border-radius: 10px; /* Increased for more rounded corners */
+  border-radius: 10px;
   color: white;
   font-family: 'Jost', sans-serif;
   font-size: 1rem;
   cursor: pointer;
-  transition: filter 0.3s, background-color 0.3s; /* Added transition for hover/active and background color */
+  transition: filter 0.3s, background-color 0.3s;
 }
 
+.mark-button:first-child {
+    margin-left: 0;
+}
+
+.mark-button:last-child {
+    margin-right: 0;
+}
+
+
 .mark-button:hover {
-  filter: brightness(110%); /* Brighten on hover */
+  filter: brightness(110%);
 }
 
 .mark-button:active {
-  filter: brightness(90%); /* Darken on click */
+  filter: brightness(90%);
 }
 
 .mark-button.selected {
-  filter: brightness(120%); /* Slightly lighter when selected */
+  filter: brightness(120%);
 }
 
 .send-button {
   background-color: black;
   color: white;
   border: none;
-  border-radius: 10px; /* Increased for more rounded corners */
+  border-radius: 10px;
   padding: 0.75rem 1.5rem;
   font-family: 'Jost', sans-serif;
   font-size: 1.25rem;
@@ -225,81 +240,222 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  margin: 0 auto;
-  transition: filter 0.3s, background-color 0.3s; /* Added transition for hover/active and background color */
+  width: 100%;
+  box-sizing: border-box;
+  transition: filter 0.3s, background-color 0.3s;
 }
 
 .send-button:hover {
-  filter: brightness(130%); /* Brighten on hover */
+  filter: brightness(130%);
 }
 
 .send-button:active {
-  filter: brightness(90%); /* Darken on click */
+  filter: brightness(90%);
 }
 
-/* --- Responsive Adjustments --- */
 
-/* Keep these media queries, but they will now affect the size of the flex items */
+/* --- View Mode Styles (New) --- */
+.view-header {
+  height: 12.5%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  flex-shrink: 0;
+  border-top-left-radius: 20px; /* Apply top radius here */
+  border-top-right-radius: 20px; /* Apply top radius here */
+}
+
+.view-header-text {
+  flex: 1;
+  text-align: center;
+  font-family: 'Jost', sans-serif;
+  font-size: 1.5rem;
+  color: black;
+  /* Adjust margin to visually center the text */
+  margin-right: 2rem; /* Add margin to offset the back button */
+}
+
+
+.view-content {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1rem; /* Spacing between elements in view */
+  background-color: #f6f6f6; /* Match side window background */
+}
+
+.view-message-details {
+    margin-bottom: 1rem; /* Space between message content and reply area */
+}
+
+.view-message-details h3 {
+  margin-top: 0rem;
+  margin-bottom: 0.5rem;
+  margin-left: .5rem;
+  margin-right: .5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.view-message-details p {
+  margin-bottom: 1rem;
+  margin-left: .5rem;
+  margin-right: .5rem;
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.4;
+  white-space: pre-wrap; /* Preserve line breaks from the body text */
+  word-wrap: break-word; /* Break long words */
+}
+
+.view-message-details .view-time {
+  display: block; /* Make it a block element */
+  font-size: 0.9rem;
+  color: #888;
+  text-align: right; /* Align time to the right */
+  margin-top: 0.5rem;
+  margin-left: .5rem;
+  margin-right: .5rem;
+}
+
+/* Styles for the Reply Area (New) */
+.reply-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: auto; /* Push reply area to the bottom if content is short */
+  /* Add padding-top to create visual separation if margin-top auto is used */
+  padding-top: 1rem;
+  /* Optional: add a border-top to visually separate */
+  /* border-top: 1px solid #ccc; */
+}
+
+.reply-area label {
+  font-family: 'Jost', sans-serif;
+  font-size: 1rem;
+  color: #333;
+}
+
+
+.reply-area textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: 'Jost', sans-serif;
+  font-size: 1rem;
+  height: 100px; /* Default height for reply */
+  resize: vertical; /* Allow vertical resizing */
+}
+
+/* Reuse send-button styles */
+.reply-area .send-button {
+    /* Inherits styles from .send-button */
+    margin-top: 0.5rem; /* Space above the button */
+}
+
+
+/* --- Responsive Adjustments --- */
+/* Note: You might need to adjust the top/right values in the media queries as well if you want it to stay fixed but move at different screen sizes. */
 @media screen and (max-width: 1024px) {
   .side-window {
       width: 35vw;
-      height: 70vh;
-      /* Removed fixed positioning adjustments */
-      /* right: 3vw; */
-      /* bottom: 5vh; */
+      height: 70vh; /* Consider adjusting if base height changed significantly */
+      /* Adjust fixed position if needed for this breakpoint */
+      /* top: calc(3vh + 1rem); */
+      /* right: 4vw; */
   }
   .header-button,
-  .compose-header-text {
+  .compose-header-text,
+  .view-header-text { /* Apply to view header too */
       font-size: 1.1rem;
   }
   .side-window-content p {
       font-size: 1.3rem;
   }
+  .view-message-details h3 { /* Adjust view details font size */
+      font-size: 1.15rem;
+  }
+   .view-message-details p { /* Adjust view details font size */
+      font-size: 0.95rem;
+  }
+   .view-message-details .view-time { /* Adjust view details font size */
+      font-size: 0.85rem;
+  }
 }
 
 @media screen and (max-width: 768px) {
   .side-window {
-      width: 80vw; /* Will stack below main window on smaller screens */
-      height: 60vh;
-      /* Removed fixed positioning adjustments */
-      /* right: 10vw; */
-      /* bottom: 5vh; */
+      width: 80vw;
+      height: 60vh; /* Consider adjusting */
+      /* Adjust fixed position if needed for this breakpoint */
+      top: calc(3vh + 1rem); /* Keep consistent top */
+      right: 10vw; /* Center it more on smaller screens */
   }
-  /* Adjust gap on main-layout-container for smaller screens in App.css if needed */
-  /* Example: @media (max-width: 768px) { .main-layout-container { flex-direction: column; gap: 1rem; } } */
   .header-button {
       width: 32%;
       font-size: 1rem;
       padding: 0.35rem 0.5rem;
   }
   .side-window-header,
-  .compose-header {
+  .compose-header,
+  .view-header { /* Apply to view header too */
       height: 15%;
-  }
-  .side-window-content,
-  .compose-content {
-      height: 70%;
-      padding: 8px;
   }
   .side-window-content p {
       font-size: 1.1rem;
+  }
+   .compose-header-text,
+   .view-header-text { /* Apply to view header too */
+      font-size: 1.2rem;
+      margin-right: 1.5rem; /* Adjust margin */
+  }
+   .view-message-details h3 { /* Adjust view details font size */
+      font-size: 1rem;
+  }
+   .view-message-details p { /* Adjust view details font size */
+      font-size: 0.9rem;
+  }
+   .view-message-details .view-time { /* Adjust view details font size */
+      font-size: 0.8rem;
   }
 }
 
 @media screen and (max-width: 480px) {
   .side-window {
-      width: 90vw; /* Will stack below main window on smaller screens */
-      height: 50vh;
-      /* Removed fixed positioning adjustments */
-      /* right: 5vw; */
-      /* bottom: 4vh; */
+      width: 90vw;
+      height: 50vh; /* Consider adjusting */
+      /* Adjust fixed position if needed for this breakpoint */
+      top: calc(3vh + 0.5rem); /* Adjust top */
+      right: 5vw; /* Center it more */
   }
   .header-button,
-  .compose-header-text {
+  .compose-header-text,
+  .view-header-text { /* Apply to view header too */
       font-size: 0.9rem;
       padding: 0.3rem 0.5rem;
   }
   .side-window-content p {
       font-size: 1rem;
+  }
+   .compose-header-text,
+   .view-header-text { /* Apply to view header too */
+      font-size: 1rem;
+      margin-right: 1rem; /* Adjust margin */
+  }
+   .view-message-details h3 { /* Adjust view details font size */
+      font-size: 0.95rem;
+  }
+   .view-message-details p { /* Adjust view details font size */
+      font-size: 0.85rem;
+  }
+   .view-message-details .view-time { /* Adjust view details font size */
+      font-size: 0.75rem;
   }
 }

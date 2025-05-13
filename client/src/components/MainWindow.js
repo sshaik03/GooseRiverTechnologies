@@ -169,7 +169,7 @@ const MainWindow = ({ setHeaderColor, handleNotificationClick, handleComposeClic
             <input
               id="search-input"
               type="text"
-              placeholder="Type and hit enter"
+              placeholder="Type and hit Enter"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               onKeyDown={e => {

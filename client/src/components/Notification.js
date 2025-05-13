@@ -14,6 +14,7 @@ const LIGHT_COLOR_MAP = {
   claims: '#ffeccc', // Lighter orange
 };
 
+
 const Notification = ({
   notificationData, // Receive the entire notification object
   onClick // Receive the click handler function from parent (MainWindow)
@@ -29,20 +30,18 @@ const Notification = ({
       notification_type = 'default' // Default type if missing
   } = notificationData || {}; // Handle case where notificationData might be null/undefined
 
-  // Use a consistent key for COLOR_MAP lookup even if notification_type is missing
-  const typeKey = notification_type === 'policy' ? 'policy' : notification_type; // Ensure 'policy' key is used if type is 'policy'
+   // Use a consistent key for COLOR_MAP lookup even if notification_type is missing
+   const typeKey = notification_type === 'policy' ? 'policy' : notification_type; // Ensure 'policy' key is used if type is 'policy'
+
 
   // State for click flash effect (local state is fine for this visual effect)
   const [isFlashing, setIsFlashing] = useState(false);
 
-  // Format the timestamp (apply manual UTC fix)
-  let dt = time_sent ? new Date(time_sent) : null;
-  if (dt) {
-    // subtract local offset so that the timestamp is treated as UTC
-    dt = new Date(dt.getTime() - dt.getTimezoneOffset() * 60000);
-  }
+  // Format the timestamp
+  const dt = time_sent ? new Date(time_sent) : null;
   const now = new Date();
   const isToday = dt ? dt.toDateString() === now.toDateString() : false;
+
 
   const formattedStamp = dt
     ? (isToday
@@ -50,16 +49,19 @@ const Notification = ({
         : dt.toLocaleDateString([], { month: 'short', day: 'numeric' }))
     : 'Invalid Date'; // Display 'Invalid Date' if time_sent is not valid
 
+
   const dotColor = COLOR_MAP[typeKey] || '#ccc'; // Use typeKey for color lookup
   const flashColor = LIGHT_COLOR_MAP[typeKey] || '#eeeeee';
+
 
   const handleClick = () => {
     // Call the click handler function passed from the parent,
     // providing the full notification data.
     // Ensure notificationData is valid before calling onClick
     if (notificationData && onClick) {
-      onClick(notificationData);
+       onClick(notificationData);
     }
+
 
     // Trigger the flash effect regardless, for visual feedback
     setIsFlashing(true);
@@ -82,13 +84,14 @@ const Notification = ({
            style={{ backgroundColor: dotColor }}
          />
       )}
-      {/* Render the outline dot if the message IS read */}
-      {is_read && (
-         <span
-           className="notification-dot read-dot" // Added 'read-dot' class for potential specific styles if needed
-           style={{ borderColor: dotColor }} // Use border for outline
-         />
-      )}
+       {/* Render the outline dot if the message IS read */}
+       {is_read && (
+           <span
+             className="notification-dot read-dot" // Added 'read-dot' class for potential specific styles if needed
+             style={{ borderColor: dotColor }} // Use border for outline
+           />
+       )}
+
 
       <div className="notification-content">
         <h3 className="notification-subject">{subject}</h3>

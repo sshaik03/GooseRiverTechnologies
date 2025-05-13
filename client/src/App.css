@@ -86,19 +86,8 @@ body {
   margin-right: auto; /* Use auto margin on the right to allow it to take space */
 }
 <<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
-/* position the logout button at top-right */
-.logout-wrapper {
-  position: fixed;
-  top: 0.35rem;      /* tweak as you like */
-  right: 4rem;      /* tweak for horizontal padding */
   z-index: 10000;   /* above other content */
 }
-
-=======
-=======
->>>>>>> Stashed changes
 /* position the logout button at top-right */
 .logout-wrapper {
   position: fixed;
@@ -106,10 +95,6 @@ body {
   right: 4rem;      /* tweak for horizontal padding */
   z-index: 10000;   /* above other content */
 }
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 .logout-wrapper .compose-button {
   background-color: black;
   width: 100%;

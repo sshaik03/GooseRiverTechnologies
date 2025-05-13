@@ -86,6 +86,7 @@ app.post('/login', async (req, res) => {
       process.env.JWT_SECRET || 'secKeyGooseRiver',
       { expiresIn: '1h' }
     );
+    res.json({ message: 'Login successful', token, ...user });
   } catch (e) {
     console.error('Login error:', e);
     res.status(500).json({ message: 'Server error during login' });

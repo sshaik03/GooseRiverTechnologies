@@ -85,15 +85,13 @@ body {
   margin-left: calc(-24vw - 2rem); /* Set left margin to the desired left edge position */
   margin-right: auto; /* Use auto margin on the right to allow it to take space */
 }
-
 /* position the logout button at top-right */
 .logout-wrapper {
   position: fixed;
-  top: 0.35rem;      /* tweak as you like */
+  top: .25rem;      /* tweak as you like */
   right: 4rem;      /* tweak for horizontal padding */
   z-index: 10000;   /* above other content */
 }
-
 .logout-wrapper .compose-button {
   background-color: black;
   width: 100%;

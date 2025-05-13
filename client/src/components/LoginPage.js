@@ -24,6 +24,7 @@ const LoginPage = ({ onLoginSuccess, onRegisterClick }) => {
       const data = await response.json();
 
       if (response.ok) {
+        alert('Login successful');
         localStorage.setItem('token', data.token);
         onLoginSuccess();
       } else {
